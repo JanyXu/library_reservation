@@ -1,0 +1,1 @@
+import 'package:flutter/material.dart';class SCMainPage extends StatelessWidget {  const SCMainPage({Key? key}) : super(key: key);  @override  Widget build(BuildContext context) {    return Container();  }}

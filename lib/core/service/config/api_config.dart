@@ -1,0 +1,1 @@
+class ApiConfig{  static const String baseUrl = 'http://123.207.32.32:8001/api';  static const bool isRelease = false;}

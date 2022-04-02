@@ -1,0 +1,1 @@
+import 'package:flutter/material.dart';class ColorConfig {  static const Color text333333 = Color(0xff333333);}
