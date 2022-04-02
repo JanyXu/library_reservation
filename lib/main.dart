@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_reservation/ui/pages/scan_code_main.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: '扫码助手421421'),
+      home: SCMainPage(),
     );
   }
 }
