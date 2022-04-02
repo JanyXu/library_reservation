@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget buildDetail(String key,String value,String valueAdd,bool recordMark) {
     print("${window.physicalSize.width}");
-    double widthTemp = window.physicalSize.width;
+    // double widthTemp = window.physicalSize.width;
     return ListTile(
       title: Text(key),
       trailing: Container(
