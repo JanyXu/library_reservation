@@ -1,8 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:library_reservation/provide_model/scan_speed_provide_model.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  //runApp(
+  // ChangeNotifierProvider(
+  //     create: (ctx)=>TestProviderModel(),
+  //
+  // child:MyApp()));
+  runApp(MultiProvider(child: MyApp(), providers: [
+    ChangeNotifierProvider(create: (ctx) => TestProviderModel())
+  ]));
 }
 
 class MyApp extends StatelessWidget {
@@ -45,11 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Column buildSetting() {
     return Column(
-      children: [
-        buildTransplantCode(),
-        buildScanRecord(),
-        buildScanRemind()
-      ],
+      children: [buildTransplantCode(), buildScanRecord(), buildScanRemind()],
     );
   }
 
@@ -73,9 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         trailing: Icon(CupertinoIcons.right_chevron),
-        onTap: (){
-
-        },
+        onTap: () {},
       ),
     );
   }
@@ -86,29 +89,27 @@ class _MyHomePageState extends State<MyHomePage> {
       child: ListTile(
         title: Text('扫码记录'),
         trailing: Icon(CupertinoIcons.right_chevron),
-        onTap: (){
-
-        },
+        onTap: () {},
       ),
     );
   }
+
   Widget buildScanRemind() {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 1),
       color: Colors.white,
       child: ListTile(
         title: Text('扫码提示'),
-        trailing:
-        Row(
+        trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('中速'),
+            Consumer<TestProviderModel>(builder: (ctx, vm, child) {
+              return Text("${vm.scan_speed}");
+            }),
             Icon(CupertinoIcons.right_chevron),
           ],
         ),
-        onTap: (){
-
-        },
+        onTap: () {},
       ),
     );
   }

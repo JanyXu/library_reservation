@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
+
+import 'package:library_reservation/setting/theme.dart';
 void main() {
   runApp(MyApp());
 }
@@ -9,11 +12,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      title: '扫码记录详情',
+      theme: ScanTheme.lightTheme,
+        darkTheme: ScanTheme.darkTheme,
+      home: MyHomePage(title: '扫码记录详情'),
     );
   }
 }
@@ -32,7 +34,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(widget.title),
+        leading: Icon(CupertinoIcons.left_chevron),
       ),
       body: Column(
         children: [
@@ -40,10 +44,10 @@ class _MyHomePageState extends State<MyHomePage> {
           buildDetail('身份证号',"姓名","",false),
           buildDetail('手机号码',"姓名","",false),
           buildDetail('健康状态',"姓名","",true),
-          buildDetail('核酸检测记录',"姓名","阴性cxxxxxxxxxxxxxxxxx",false),
+          buildDetail('核酸检测记录',"姓名","阴性cxxxxxxxxxxxx",false),
           buildDetail('新冠疫苗',"姓名","",false),
           buildDetail('新冠疫苗加强针',"姓名","",false),
-          buildDetail('行程核验',"新冠疫苗加强针ndjnsssssssssssssdnscdddddddddddsdcdscs","",false),
+          buildDetail('行程核验',"新冠疫苗加强针新冠疫苗新冠疫苗加强针新冠疫苗加强针新冠疫苗加强针新冠疫苗加强针加强针新冠疫苗加强针新冠疫苗加强针","",false),
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
@@ -55,14 +59,18 @@ class _MyHomePageState extends State<MyHomePage> {
     return ListTile(
       title: Text(key),
       trailing: Container(
-        width: 200,
+        width: MediaQuery.of(context).size.width/2,
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
               valueAdd.isEmpty?"":valueAdd,style: TextStyle(color: Colors.green),),
             SizedBox(width: 10,),
-            Expanded(
+            Container(
+              constraints: BoxConstraints(
+
+                  maxWidth: MediaQuery.of(context).size.width/2-10),
               child: Text(value,style: TextStyle(color: recordMark?Colors.green:Colors.black),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,),

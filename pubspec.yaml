@@ -35,13 +35,20 @@ dependencies:
   shared_preferences: 2.0.7
   #ios 问题   fontSize 为null 强转double 崩溃  fontSize 赋默认值
   fluttertoast: 8.0.8
-  images_picker: ^1.2.1
   scan: ^1.6.0
-
+  images_picker: ^1.2.1
+  path_provider: ^2.0.6
+  webview_flutter: ^2.0.13
 
 dev_dependencies:
+  espresso: ^0.1.0+2
+  flutter_driver:
+    sdk: flutter
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
+  pedantic: ^1.10.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
