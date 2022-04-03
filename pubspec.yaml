@@ -28,12 +28,16 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  provider: ^6.0.2
   #强大的Dart Http请求库，支持Restful API、FormData、拦截器、请求取消、Cookie管理、文件上传/下载、超时、自定义适配器等
   dio: 4.0.4
   #持久存储
   shared_preferences: 2.0.7
   #ios 问题   fontSize 为null 强转double 崩溃  fontSize 赋默认值
   fluttertoast: 8.0.8
+  images_picker: ^1.2.1
+  scan: ^1.6.0
+
 
 dev_dependencies:
   flutter_test:
@@ -49,7 +53,13 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
+  plugin:
+    platforms:
+      android:
+        package: com.chavesgu.scan
+        pluginClass: ScanPlugin
+      ios:
+        pluginClass: ScanPlugin
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
