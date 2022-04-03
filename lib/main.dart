@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:library_reservation/ui/pages/scan_code_main.dart';
+
+import 'core/router/router.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SCMainPage(),
+      initialRoute: XBRouter.initialRoute,
+      routes: XBRouter.routes,
     );
   }
 }
