@@ -43,16 +43,6 @@
 	<key>NSCameraUsageDescription</key>
     <string>Your Description</string>
 
-    <key>io.flutter.embedded_views_preview</key>
-    <string>YES</string>
-    <key>NSCameraUsageDescription</key>
-    <string>告诉用户你使用相机的目的</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>告诉用户你使用麦克风的目的</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>告诉用户你使用相册的目的</string>
-    <key>io.flutter.embedded_views_preview</key>
-    <string>YES</string>
 	<false/>
 
 </dict>
