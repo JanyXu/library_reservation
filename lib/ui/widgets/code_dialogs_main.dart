@@ -1,0 +1,1 @@
+import 'package:flutter/material.dart';class SCDialogsDataWidget extends StatelessWidget {  const SCDialogsDataWidget({Key? key}) : super(key: key);  @override  Widget build(BuildContext context) {    return Stack(      children: [],    );  }}
