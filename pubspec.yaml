@@ -37,6 +37,9 @@ dependencies:
   fluttertoast: 8.0.8
   #显示网络图像并将它们保存在缓存目录中
   cached_network_image: 3.2.0
+  #适配工具
+  flutter_screenutil: 5.3.0
+
   images_picker: ^1.2.1
   scan: ^1.6.0
   path_provider: ^2.0.6
