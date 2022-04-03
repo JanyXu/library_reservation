@@ -1,0 +1,1 @@
+class Assets{  Assets._();  static const String bg_vertical = 'assets/images/dialogs_bg_vertical.png';  static const String mark_yellow = 'assets/images/dialogs_mark_yellow.png';}
