@@ -37,9 +37,9 @@ class _ScanPageState extends State<ScanPage> {
       }
       flag = !flag;
     });
-    //SystemChrome.setPreferredOrientations(DeviceOrientation.values);
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    SystemChrome.setPreferredOrientations(DeviceOrientation.values);
+    // SystemChrome.setPreferredOrientations(
+    //     [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
   }
 
   ScanController controller = ScanController();
