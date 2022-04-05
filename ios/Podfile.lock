@@ -1,4 +1,6 @@
 PODS:
+  - audioplayers (0.0.1):
+    - Flutter
   - Flutter (1.0.0)
   - fluttertoast (0.0.2):
     - Flutter
@@ -9,6 +11,8 @@ PODS:
   - images_picker (0.0.1):
     - Flutter
     - ZLPhotoBrowser (= 4.2.5)
+  - orientation (0.0.1):
+    - Flutter
   - path_provider_ios (0.0.1):
     - Flutter
   - scan (0.0.1):
@@ -26,9 +30,11 @@ PODS:
   - ZLPhotoBrowser/Core (4.2.5)
 
 DEPENDENCIES:
+  - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
   - Flutter (from `Flutter`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - images_picker (from `.symlinks/plugins/images_picker/ios`)
+  - orientation (from `.symlinks/plugins/orientation/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - scan (from `.symlinks/plugins/scan/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
@@ -43,12 +49,16 @@ SPEC REPOS:
     - Toast
 
 EXTERNAL SOURCES:
+  audioplayers:
+    :path: ".symlinks/plugins/audioplayers/ios"
   Flutter:
     :path: Flutter
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   images_picker:
     :path: ".symlinks/plugins/images_picker/ios"
+  orientation:
+    :path: ".symlinks/plugins/orientation/ios"
   path_provider_ios:
     :path: ".symlinks/plugins/path_provider_ios/ios"
   scan:
@@ -61,10 +71,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
+  audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   images_picker: fa9364e3a7d3083c49f865fcfb2b9e7cdc574d3a
+  orientation: 6c9203efe86ce4cff379756910f18b2d745628c3
   path_provider_ios: 7d7ce634493af4477d156294792024ec3485acd5
   scan: aea35bb4aa59ccc8839c576a18cd57c7d492cc86
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d

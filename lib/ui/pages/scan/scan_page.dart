@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:library_reservation/provide_model/scan_speed_provide_model.dart';
+import 'package:library_reservation/ui/pages/scan/dialog.dart';
 import 'package:library_reservation/ui/widgets/code_dialogs.dart';
 import 'package:library_reservation/ui/widgets/code_dialogs_main.dart';
 import 'package:orientation/orientation.dart';
@@ -28,7 +29,6 @@ class _ScanPageState extends State<ScanPage> {
   void initState() {
     super.initState();
     if (kIsWeb) {
-      // Calls to Platform.isIOS fails on web
       return;
     }
     advancedPlayer.onPlayerCompletion.listen((event) {
@@ -37,9 +37,10 @@ class _ScanPageState extends State<ScanPage> {
       }
       flag = !flag;
     });
-    SystemChrome.setPreferredOrientations(DeviceOrientation.values);
-    // SystemChrome.setPreferredOrientations(
-    //     [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+   SystemChrome.setPreferredOrientations(DeviceOrientation.values);
+   //  SystemChrome.setPreferredOrientations(
+   //    [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]
+   //  );
   }
 
   ScanController controller = ScanController();
@@ -51,20 +52,21 @@ class _ScanPageState extends State<ScanPage> {
           top: true,
           bottom: true,
           child: Consumer<TestProviderModel>(builder: (ctx, vm, child) {
-            return OrientationBuilder(
-                builder: (BuildContext context, Orientation orientation) {
-              double width = MediaQuery.of(context).size.width;
-              double height = MediaQuery.of(context).size.height;
-              bool portraitFlag =
-                  orientation == Orientation.portrait ? true : false;
-              print('dssssssssssssssssssss========$width');
-              return Container(
-                child: portraitFlag
-                    ? buildScanStack(vm, context)
-                    : buildScanStack(vm, context),
-              );
-              // return buildScanStack(vm, context);
-            });
+            return buildScanStack(vm,context);
+            // return OrientationBuilder(
+            //     builder: (BuildContext context, Orientation orientation) {
+            //   double width = MediaQuery.of(context).size.width;
+            //   double height = MediaQuery.of(context).size.height;
+            //   bool portraitFlag =
+            //       orientation == Orientation.portrait ? true : false;
+            //   print('dssssssssssssssssssss========$width');
+            //   return Container(
+            //     child: portraitFlag
+            //         ? buildScanStack(vm, context)
+            //         : buildScanStack(vm, context),
+            //   );
+            //   // return buildScanStack(vm, context);
+            // });
           })),
     );
   }
@@ -123,23 +125,7 @@ class _ScanPageState extends State<ScanPage> {
       builder: (BuildContext context) {
         double width = MediaQuery.of(context).size.width;
         double height = MediaQuery.of(context).size.height;
-        return AlertDialog(
-          contentPadding: EdgeInsets.zero,
-          //title: new Text('标题'),
-          content: new SingleChildScrollView(
-            child: buildDialog(new SCDialogsDataWidget(
-              isHorizontal: false,
-            )),
-          ),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text('确定'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
+        return SCDialog();
         // buildDialog(Container(
         //   width: double.infinity,
         //   height: double.infinity,
@@ -161,9 +147,6 @@ class _ScanPageState extends State<ScanPage> {
   @override
   void dispose() {
     // TODO: implement dispose
-    // 强制竖屏
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     advancedPlayer.dispose();
     super.dispose();
   }
