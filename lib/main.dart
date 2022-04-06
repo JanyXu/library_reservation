@@ -42,9 +42,9 @@ class MyApp extends StatelessWidget {
       theme: ScanTheme.lightTheme,
       darkTheme: ScanTheme.darkTheme,
       title: '扫码助手',
-      initialRoute: XBRouter.initialRoute,
-      routes: XBRouter.routes,
-      // home: MyHomePage(title: '扫码助手',),
+      // initialRoute: XBRouter.initialRoute,
+      // routes: XBRouter.routes,
+      home: MyHomePage(title: '扫码助手',),
     );
   }
 }
@@ -151,23 +151,29 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Container(
               child: ElevatedButton(
                 onPressed: (){
-                  _getCheckVersion().then((value) {
-                    String dicCode = value['dicCode'];
-                    String version = value['version'];
-                    if (value['version'] == ManagerUtils.instance.getDicVersion(Common.dic_code)){
-                      String key = '$dicCode$version';
-                      String? dicValue = ManagerUtils.instance.getDicValue(key);
-                      print('读取缓存');
-                      printDicValue(dicValue!);
-                      return;
-                    }
-                    _getDicValue().then((value) {
-                      ManagerUtils.instance.saveDicValue('$dicCode$version', value.dicValue);
-                      ManagerUtils.instance.saveDicVersion(version, dicCode);
-                      print('读取接口数据');
-                      printDicValue(value.dicValue!);
-                    });
-                  });
+                  if (ManagerUtils.instance.getRate() == 3){
+                    print('读取缓存');
+                  }else{
+                    ManagerUtils.instance.saveRate(3);
+                    print('设置缓存');
+                  }
+                  // _getCheckVersion().then((value) {
+                  //   String dicCode = value['dicCode'];
+                  //   String version = value['version'];
+                  //   if (value['version'] == ManagerUtils.instance.getDicVersion(Common.dic_code)){
+                  //     String key = '$dicCode$version';
+                  //     String? dicValue = ManagerUtils.instance.getDicValue(key);
+                  //     print('读取缓存');
+                  //     printDicValue(dicValue!);
+                  //     return;
+                  //   }
+                  //   _getDicValue().then((value) {
+                  //     ManagerUtils.instance.saveDicValue('$dicCode$version', value.dicValue);
+                  //     ManagerUtils.instance.saveDicVersion(version, dicCode);
+                  //     print('读取接口数据');
+                  //     printDicValue(value.dicValue!);
+                  //   });
+                  // });
                 },
                 child: Text("normal"),
               ),
