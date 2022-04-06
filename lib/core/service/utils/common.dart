@@ -1,1 +1,1 @@
-class Common {  static const bool isRelease = false;  /// 路由协议头，需全部为小写字母，单词之间可用英文中划线分隔  static const String scheme = "scanCode://";  static const String DEFAULT_API = 'http://123.207.32.32:8001/api';}
+class Common {  static const bool isRelease = false;  /// 路由协议头，需全部为小写字母，单词之间可用英文中划线分隔  static const String dic_code = "ScanCodeAssistantExplain";  static const String DEFAULT_API = 'https://ykm.bigdatacq.com:10214';}
