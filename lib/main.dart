@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'core/model/dic_data_entity.dart';
 import 'dart:async';
 
+import 'core/router/router.dart';
 import 'core/service/config/api_config.dart';
 import 'core/service/network/network.dart';
 
