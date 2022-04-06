@@ -38,28 +38,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // _getCheckVersion().then((value) {
-    //   String dicCode = value['dicCode'];
-    //   String version = value['version'];
-    //   if (value['version'] == ManagerUtils.instance.getDicVersion(Common.dic_code)){
-    //     String key = '$dicCode$version';
-    //     String? dicValue = ManagerUtils.instance.getDicValue(key);
-    //     print('读取缓存');
-    //     return;
-    //   }
-    //   _getDicValue().then((value) {
-    //     ManagerUtils.instance.saveDicValue('$dicCode$version', value.dicValue);
-    //     ManagerUtils.instance.saveDicVersion(version, dicCode);
-    //     print('读取接口数据');
-    //   });
-    // });
+    _getCheckVersion().then((value) {
+      String dicCode = value['dicCode'];
+      String version = value['version'];
+      if (value['version'] == ManagerUtils.instance.getDicVersion(Common.dic_code)){
+        String key = '$dicCode$version';
+        String? dicValue = ManagerUtils.instance.getDicValue(key);
+        print('读取缓存');
+        return;
+      }
+      _getDicValue().then((value) {
+        ManagerUtils.instance.saveDicValue('$dicCode$version', value.dicValue);
+        ManagerUtils.instance.saveDicVersion(version, dicCode);
+        print('读取接口数据');
+      });
+    });
     return MaterialApp(
       theme: ScanTheme.lightTheme,
       darkTheme: ScanTheme.darkTheme,
       title: '扫码助手',
-      // initialRoute: XBRouter.initialRoute,
-      // routes: XBRouter.routes,
-      home: MyHomePage(title: '扫码助手',),
+      initialRoute: XBRouter.initialRoute,
+      routes: XBRouter.routes,
+      // home: MyHomePage(title: '扫码助手',),
     );
   }
 
@@ -212,7 +212,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   //   });
                   // });
                 },
-                child: Text(ManagerUtils.instance.getDicVersion(Common.dic_code)!),
+                child: Text('dadsadsa'),
               ),
             ),
           ), // This trailing comma makes auto-formatting nicer for build methods.
