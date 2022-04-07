@@ -42,8 +42,8 @@ class MyApp extends StatelessWidget {
       String dicCode = value['dicCode'];
       String version = value['version'];
       if (value['version'] == ManagerUtils.instance.getDicVersion(Common.dic_code)){
-        String key = '$dicCode$version';
-        String? dicValue = ManagerUtils.instance.getDicValue(key);
+        // String key = '$dicCode$version';
+        // String? dicValue = ManagerUtils.instance.getDicValue(key);
         print('读取缓存');
         return;
       }
@@ -53,6 +53,8 @@ class MyApp extends StatelessWidget {
         print('读取接口数据');
       });
     });
+
+    initPlatformState();
     return MaterialApp(
       theme: ScanTheme.lightTheme,
       darkTheme: ScanTheme.darkTheme,
@@ -83,6 +85,75 @@ class MyApp extends StatelessWidget {
     // print('dicData========${dataEntity.dicValue}');
 
     return dataEntity;
+  }
+
+
+  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  //设置设备ID
+  Future<void> initPlatformState() async {
+    Map<String, dynamic> deviceData = <String, dynamic>{};
+
+    try {
+      if (Platform.isAndroid) {
+        deviceData = _readAndroidBuildData(await deviceInfoPlugin.androidInfo);
+      } else if (Platform.isIOS) {
+        deviceData = _readIosDeviceInfo(await deviceInfoPlugin.iosInfo);
+      }
+    } on PlatformException {
+      deviceData = <String, dynamic>{
+        'Error:': 'Failed to get platform version.'
+      };
+    }
+
+    ManagerUtils.instance.deviceMap = deviceData;
+  }
+
+  Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
+    return <String, dynamic>{
+      'version.securityPatch': build.version.securityPatch,
+      'version.sdkInt': build.version.sdkInt,
+      'version.release': build.version.release,
+      'version.previewSdkInt': build.version.previewSdkInt,
+      'version.incremental': build.version.incremental,
+      'version.codename': build.version.codename,
+      'version.baseOS': build.version.baseOS,
+      'board': build.board,
+      'bootloader': build.bootloader,
+      'brand': build.brand,
+      'device': build.device,
+      'display': build.display,
+      'fingerprint': build.fingerprint,
+      'hardware': build.hardware,
+      'host': build.host,
+      'id': build.id,
+      'manufacturer': build.manufacturer,
+      'model': build.model,
+      'product': build.product,
+      'supported32BitAbis': build.supported32BitAbis,
+      'supported64BitAbis': build.supported64BitAbis,
+      'supportedAbis': build.supportedAbis,
+      'tags': build.tags,
+      'type': build.type,
+      'isPhysicalDevice': build.isPhysicalDevice,
+      'androidId': build.androidId,
+      'systemFeatures': build.systemFeatures,
+    };
+  }
+  Map<String, dynamic> _readIosDeviceInfo(IosDeviceInfo data) {
+    return <String, dynamic>{
+      'name': data.name,
+      'systemName': data.systemName,
+      'systemVersion': data.systemVersion,
+      'model': data.model,
+      'localizedModel': data.localizedModel,
+      'identifierForVendor': data.identifierForVendor,
+      'isPhysicalDevice': data.isPhysicalDevice,
+      'utsname.sysname:': data.utsname.sysname,
+      'utsname.nodename:': data.utsname.nodename,
+      'utsname.release:': data.utsname.release,
+      'utsname.version:': data.utsname.version,
+      'utsname.machine:': data.utsname.machine,
+    };
   }
 }
 
@@ -117,9 +188,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (!mounted) return;
 
-    setState(() {
-      _deviceData = deviceData;
-    });
+    ManagerUtils.instance.deviceMap = deviceData;
   }
 
   Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
