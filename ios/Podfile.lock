@@ -1,6 +1,9 @@
 PODS:
   - audioplayers (0.0.1):
     - Flutter
+  - code_scanner (0.0.1):
+    - Flutter
+    - MTBBarcodeScanner
   - device_info (0.0.1):
     - Flutter
   - Flutter (1.0.0)
@@ -13,6 +16,7 @@ PODS:
   - images_picker (0.0.1):
     - Flutter
     - ZLPhotoBrowser (= 4.2.5)
+  - MTBBarcodeScanner (5.0.11)
   - orientation (0.0.1):
     - Flutter
   - path_provider_ios (0.0.1):
@@ -31,6 +35,7 @@ PODS:
 
 DEPENDENCIES:
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
+  - code_scanner (from `.symlinks/plugins/code_scanner/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - Flutter (from `Flutter`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
@@ -44,6 +49,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - FMDB
+    - MTBBarcodeScanner
     - ZLPhotoBrowser
   trunk:
     - Toast
@@ -51,6 +57,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   audioplayers:
     :path: ".symlinks/plugins/audioplayers/ios"
+  code_scanner:
+    :path: ".symlinks/plugins/code_scanner/ios"
   device_info:
     :path: ".symlinks/plugins/device_info/ios"
   Flutter:
@@ -72,11 +80,13 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
+  code_scanner: 70a721415d083d1bf4b25bed2b2dc7572d91680f
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   images_picker: fa9364e3a7d3083c49f865fcfb2b9e7cdc574d3a
+  MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
   orientation: 6c9203efe86ce4cff379756910f18b2d745628c3
   path_provider_ios: 7d7ce634493af4477d156294792024ec3485acd5
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d

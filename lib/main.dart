@@ -1,12 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:library_reservation/core/service/utils/common.dart';
 import 'package:library_reservation/core/service/utils/manager_utils.dart';
 import 'package:library_reservation/provide_model/scan_speed_provide_model.dart';
 import 'package:library_reservation/setting/theme.dart';
+import 'package:library_reservation/ui/pages/scan/scan_code_main.dart';
 import 'package:provider/provider.dart';
 import 'core/model/dic_data_entity.dart';
 import 'dart:async';
@@ -18,9 +21,10 @@ import 'core/service/network/network.dart';
 import 'package:library_reservation/core/model/dic_data_value_entity.dart';
 
 void main() {
-  runApp(MultiProvider(child: MyApp(), providers: [
-    ChangeNotifierProvider(create: (ctx) => TestProviderModel())
-  ]));
+  // runApp(MultiProvider(child: MyApp(), providers: [
+  //   ChangeNotifierProvider(create: (ctx) => TestProviderModel())
+  // ]));
+  runApp( MyApp());
   if(Platform.isAndroid){
     SystemUiOverlayStyle style = SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -35,33 +39,51 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-
+  bool falg = true;
   @override
   Widget build(BuildContext context) {
-    _getCheckVersion().then((value) {
-      String dicCode = value['dicCode'];
-      String version = value['version'];
-      if (value['version'] == ManagerUtils.instance.getDicVersion(Common.dic_code)){
-        // String key = '$dicCode$version';
-        // String? dicValue = ManagerUtils.instance.getDicValue(key);
-        print('读取缓存');
-        return;
-      }
-      _getDicValue().then((value) {
-        ManagerUtils.instance.saveDicValue('$dicCode$version', value.dicValue);
-        ManagerUtils.instance.saveDicVersion(version, dicCode);
-        print('读取接口数据');
-      });
-    });
+    // _getCheckVersion().then((value) {
+    //   String dicCode = value['dicCode'];
+    //   String version = value['version'];
+    //   // if (value['version'] == ManagerUtils.instance.getDicVersion(Common.dic_code)){
+    //   //   // String key = '$dicCode$version';
+    //   //   // String? dicValue = ManagerUtils.instance.getDicValue(key);
+    //   //   print('读取缓存');
+    //   //   return;
+    //   // }
+    //   // _getDicValue().then((value) {
+    //   //   ManagerUtils.instance.saveDicValue('$dicCode$version', value.dicValue);
+    //   //   ManagerUtils.instance.saveDicVersion(version, dicCode);
+    //   //   print('读取接口数据');
+    //   // });
+    //
+    // });
 
-    initPlatformState();
+
+    initPlatformState().then((value) {
+      if(null == value) return;
+      if(falg) {
+        falg = false;
+        _getActivityValue();
+      }
+    });
+    // if(falg) {
+    //   _getActivityValue().then((value) {
+    //     int terminalId= value['terminalId'];
+    //     _getScanValue().then((value) {
+    //
+    //     });
+    //   });
+    // }
+
+    //_getTest().then((value) => {});
     return MaterialApp(
       theme: ScanTheme.lightTheme,
       darkTheme: ScanTheme.darkTheme,
       title: '扫码助手',
-      initialRoute: XBRouter.initialRoute,
-      routes: XBRouter.routes,
-      // home: MyHomePage(title: '扫码助手',),
+      // initialRoute: XBRouter.initialRoute,
+      // routes: XBRouter.routes,
+       home: HomePage(),
     );
   }
 
@@ -87,16 +109,70 @@ class MyApp extends StatelessWidget {
     return dataEntity;
   }
 
+  static Future<String> _getScanValue() async {
+    Map<String, dynamic> map = {
+      "codes":"ScanCodeAssistantExplain"
+    };
+    final result =
+    await HttpUtil.instance.post(ApiConfig.scan, data: map);
+    // print('result=========$result');
+    String str = json.encode(result.data);
+    //DicDataEntity dataEntity = DicDataEntity().fromJson(result.data['data'][0]);
+     print('解密信息========${str}');
+
+    return str;
+  }
+
+  static Future<String> _getActivityValue() async {
+    print('缓存获取设备信息=========');
+
+    String deviceId = '';//ManagerUtils.instance.deviceMap['device'];
+    if(Platform.isAndroid) {
+      deviceId = ManagerUtils.instance.deviceMap!['device'];
+    } else {
+      deviceId = ManagerUtils.instance.deviceMap!['identifierForVendor'];
+    }
+    Map<String, dynamic> map = {
+
+      "deviceId":ManagerUtils.instance.deviceMap==null?"123":ManagerUtils.instance.deviceMap!['device'],
+      "terminalKey":"008ED075261C466E8D9B10739AF3B19B"
+    };
+    final result =
+    await HttpUtil.instance.post(ApiConfig.activate, data: map);
+    // print('result=========$result');
+    String str = json.encode(result.data);
+    //DicDataEntity dataEntity = DicDataEntity().fromJson(result.data['data'][0]);
+    print('终端信息========${str}');
+
+    return str;
+  }
+  static Future<String> _getTest() async {
+    Map<String, dynamic> map = {
+      "deviceId":"123",
+      "terminalKey":"FBC73AD51F5B4FCAA99D9547AF3F51A2"
+    };
+    final result =
+    await HttpUtil.instance.get("/v1/ykm/third-api/terminal/access-token");
+    // print('result=========$result');
+    String str = json.encode(result.data);
+    //DicDataEntity dataEntity = DicDataEntity().fromJson(result.data['data'][0]);
+    print('终端信息========${str}');
+
+    return str;
+  }
+
+
 
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   //设置设备ID
-  Future<void> initPlatformState() async {
+  Future<Map<String, dynamic>?> initPlatformState() async {
     Map<String, dynamic> deviceData = <String, dynamic>{};
 
     try {
       if (Platform.isAndroid) {
         deviceData = _readAndroidBuildData(await deviceInfoPlugin.androidInfo);
       } else if (Platform.isIOS) {
+        //print("设备号ios-------${_readIosDeviceInfo(await deviceInfoPlugin.iosInfo)}");
         deviceData = _readIosDeviceInfo(await deviceInfoPlugin.iosInfo);
       }
     } on PlatformException {
@@ -104,8 +180,10 @@ class MyApp extends StatelessWidget {
         'Error:': 'Failed to get platform version.'
       };
     }
-
     ManagerUtils.instance.deviceMap = deviceData;
+    print("设备号null-------${ManagerUtils.instance.deviceMap}");
+    return ManagerUtils.instance.deviceMap;
+
   }
 
   Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
@@ -140,6 +218,7 @@ class MyApp extends StatelessWidget {
     };
   }
   Map<String, dynamic> _readIosDeviceInfo(IosDeviceInfo data) {
+    print('name========${data.identifierForVendor}-------${data.utsname.machine}');
     return <String, dynamic>{
       'name': data.name,
       'systemName': data.systemName,
@@ -156,6 +235,8 @@ class MyApp extends StatelessWidget {
     };
   }
 }
+
+
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -321,5 +402,18 @@ class _MyHomePageState extends State<MyHomePage> {
     // Map<String, dynamic> user = convert.jsonDecode(dicValue);
     // DicDataValueEntity dataValueEntity = DicDataValueEntity().fromJson(user);
     // print('dataValueEntity========${dataValueEntity.fillInKeyText}');
+  }
+  static Future<String> _getScanValue() async {
+    Map<String, dynamic> map = {
+      "codes":"ScanCodeAssistantExplain"
+    };
+    Response result =
+    await HttpUtil.instance.post(ApiConfig.scan, parameters: map);
+// print('result=========$result');
+    Map<String ,dynamic> dataEntity = result.data;
+    String str = json.encode(dataEntity);
+   print('扫码信息========${str}');
+
+    return str;
   }
 }

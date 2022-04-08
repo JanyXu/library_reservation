@@ -1,1 +1,1 @@
-class ApiConfig{  ///测试接口  static String category = "/category";  //检查内容配置版本号  static String sysDicCheckVersion = "/v1/sys/dic/check-version";  //根据字典代码获取字典  static String sysDic = "/v1/sys/dic";}
+class ApiConfig{  ///测试接口  static String category = "/category";  //检查内容配置版本号  static String sysDicCheckVersion = "/v1/sys/dic/check-version";  //根据字典代码获取字典  static String sysDic = "/v1/sys/dic";  //扫码【请求参数和返回参数加解密】  static String scan = "/v1/ykm/third-api/terminal/scan";  static String activate = "/v1/ykm/third-api/terminal/activate";}
