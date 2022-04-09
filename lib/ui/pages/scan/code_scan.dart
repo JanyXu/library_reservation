@@ -244,7 +244,7 @@ class _CodeScannerExampleState extends State<CodeScannerExample> implements OnDi
    Future<String> _getScanValue() async {
     if(!en.isEmpty) {
       print('源码======' + en);
-      String key = SM4.createHexKey(key: '008ED075261C466E8');
+      String key = SM4.createHexKey(key: 'DE9CF236992B4D77');
       print('👇 ECB Encrypt Mode:');
       String ebcEncryptData = SM4.encrypt(data: en, key: key);
       print('🔒 EBC EncryptptData:\n $ebcEncryptData');
@@ -267,7 +267,7 @@ class _CodeScannerExampleState extends State<CodeScannerExample> implements OnDi
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return SCDialog(this);
+        return SCDialog();
       },
     );
   }
