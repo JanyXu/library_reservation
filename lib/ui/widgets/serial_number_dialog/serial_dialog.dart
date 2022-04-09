@@ -1,0 +1,1 @@
+import 'package:flutter/material.dart';class SCSerialDialogWidget extends StatelessWidget {  const SCSerialDialogWidget({Key? key}) : super(key: key);  @override  Widget build(BuildContext context) {    return Container();  }}
