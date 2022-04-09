@@ -10,6 +10,7 @@ import 'package:library_reservation/core/service/utils/manager_utils.dart';
 import 'package:library_reservation/provide_model/scan_speed_provide_model.dart';
 import 'package:library_reservation/setting/theme.dart';
 import 'package:library_reservation/ui/pages/scan/scan_code_main.dart';
+import 'package:library_reservation/ui/widgets/dialog_listener.dart';
 import 'package:provider/provider.dart';
 import 'core/model/dic_data_entity.dart';
 import 'dart:async';
@@ -19,6 +20,8 @@ import 'core/service/config/api_config.dart';
 import 'core/service/network/network.dart';
 
 import 'package:library_reservation/core/model/dic_data_value_entity.dart';
+
+import 'ui/pages/scan/dialog.dart';
 
 void main() {
   // runApp(MultiProvider(child: MyApp(), providers: [
@@ -84,6 +87,7 @@ class MyApp extends StatelessWidget {
       // initialRoute: XBRouter.initialRoute,
       // routes: XBRouter.routes,
        home: HomePage(),
+      // home: MyHomePage(title: '扫码助手',),
     );
   }
 
@@ -238,7 +242,7 @@ class MyApp extends StatelessWidget {
 
 
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatefulWidget{
   MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
@@ -246,7 +250,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>  implements OnDialogClickListener{
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   Map<String, dynamic> _deviceData = <String, dynamic>{};
 
@@ -338,29 +342,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Container(
               child: ElevatedButton(
                 onPressed: (){
-                  if (ManagerUtils.instance.getRate() == 3){
-                    print('读取缓存');
-                  }else{
-                    ManagerUtils.instance.saveRate(3);
-                    print('设置缓存');
-                  }
-                  // _getCheckVersion().then((value) {
-                  //   String dicCode = value['dicCode'];
-                  //   String version = value['version'];
-                  //   if (value['version'] == ManagerUtils.instance.getDicVersion(Common.dic_code)){
-                  //     String key = '$dicCode$version';
-                  //     String? dicValue = ManagerUtils.instance.getDicValue(key);
-                  //     print('读取缓存');
-                  //     printDicValue(dicValue!);
-                  //     return;
-                  //   }
-                  //   _getDicValue().then((value) {
-                  //     ManagerUtils.instance.saveDicValue('$dicCode$version', value.dicValue);
-                  //     ManagerUtils.instance.saveDicVersion(version, dicCode);
-                  //     print('读取接口数据');
-                  //     printDicValue(value.dicValue!);
-                  //   });
-                  // });
+                  _openAlertDialog(context);
                 },
                 child: Text('dadsadsa'),
               ),
@@ -369,51 +351,29 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  static Future<Map<String, dynamic>> _getCheckVersion() async {
-    Map<String, dynamic> map = {
-      "codes":Common.dic_code
-    };
-    final result =
-    await HttpUtil.instance.get(ApiConfig.sysDicCheckVersion, parameters: map);
-    return result.data['data'][0];
+  Future _openAlertDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return SCSerialDialog(this);
+      },
+    );
+  }
+  @override
+  void onCancel() {
+    // TODO: implement onCancel
+    print('hjjjkk');
+    // setState(() {
+    //
+    // });
+    // Future.delayed(Duration(seconds: 2000), () async {
+    //   Provider.of<TestProviderModel>(context,listen: false).set_dialog_show(false);
+    // });
   }
 
-  static Future<DicDataEntity> _getDicValue() async {
-    Map<String, dynamic> map = {
-      "codes":"ScanCodeAssistantExplain"
-    };
-    final result =
-    await HttpUtil.instance.get(ApiConfig.sysDic, parameters: map);
-    // print('result=========$result');
-    DicDataEntity dataEntity = DicDataEntity().fromJson(result.data['data'][0]);
-    // print('dicData========${dataEntity.dicValue}');
-
-    return dataEntity;
-  }
-
-  void printDicValue(String dicValue){
-    // print('dicValue==========$dicValue');
-    DicDataValueEntity? dataValueEntity = ManagerUtils.instance.getDicValueData(dicValue);
-    if (dataValueEntity != null){
-      print('dataValueEntity========${dataValueEntity.fillInKeyText}');
-    }
-
-
-    // Map<String, dynamic> user = convert.jsonDecode(dicValue);
-    // DicDataValueEntity dataValueEntity = DicDataValueEntity().fromJson(user);
-    // print('dataValueEntity========${dataValueEntity.fillInKeyText}');
-  }
-  static Future<String> _getScanValue() async {
-    Map<String, dynamic> map = {
-      "codes":"ScanCodeAssistantExplain"
-    };
-    Response result =
-    await HttpUtil.instance.post(ApiConfig.scan, parameters: map);
-// print('result=========$result');
-    Map<String ,dynamic> dataEntity = result.data;
-    String str = json.encode(dataEntity);
-   print('扫码信息========${str}');
-
-    return str;
+  @override
+  void onOk() {
+    // TODO: implement onOk
   }
 }
