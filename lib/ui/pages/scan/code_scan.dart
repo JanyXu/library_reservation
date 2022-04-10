@@ -55,10 +55,8 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
   bool dialogFlag = false;
   String en = "";
   AudioPlayer advancedPlayer = AudioPlayer();
-  String remindVoice =
-      'https://cdn-oss.bigdatacq.com/10000003/959405717506691072.mp3';
-  String resultVoice =
-      'https://cdn-oss.bigdatacq.com/10000003/959405425574744064.mp3';
+  String remindVoice = Utils.getScanCodeSound()!;
+  String resultVoice = Utils.getTotalResultVoice('risky')!;
   bool audioFlag = false;
 
   @override
@@ -133,25 +131,25 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
               scanFrameSize: Size(200, 200),
               frameColor: Colors.green,
             ),
+            // Container(
+            //   margin: const EdgeInsets.only(bottom: 500),
+            //   padding: const EdgeInsets.all(5.0),
+            //   width: 300,
+            //   decoration: BoxDecoration(
+            //     color: Color(0xcc222222),
+            //     border: Border.all(color: Color(0xcc222222)),
+            //     borderRadius: BorderRadius.circular(10),
+            //   ),
+            // ),
             Container(
-              margin: const EdgeInsets.only(bottom: 500),
-              padding: const EdgeInsets.all(5.0),
-              width: 300,
-              decoration: BoxDecoration(
-                color: Color(0xcc222222),
-                border: Border.all(color: Color(0xcc222222)),
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            Container(
-                margin: const EdgeInsets.only(top: 350),
-                padding: const EdgeInsets.all(5.0),
-                width: 300,
-                decoration: BoxDecoration(
-                  color: Color(0xcc222222),
-                  border: Border.all(color: Color(0xcc222222)),
-                  borderRadius: BorderRadius.circular(10),
-                ),
+                // margin: const EdgeInsets.only(top: 350),
+                // padding: const EdgeInsets.all(5.0),
+                // width: 300,
+                // decoration: BoxDecoration(
+                //   color: Color(0xcc222222),
+                //   border: Border.all(color: Color(0xcc222222)),
+                //   borderRadius: BorderRadius.circular(10),
+                // ),
                 child:
                     // Consumer<TestProviderModel>(builder: (ctx, vm, child) {
                     //   return

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:library_reservation/core/service/utils/manager_utils.dart';
 import 'package:library_reservation/setting/theme.dart';
+import 'package:library_reservation/utils/SM4_Util.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 main() => runApp(SettingPage());
@@ -49,9 +51,14 @@ class _SettingHomePageState extends State<SettingHomePage> {
       //是否允许js执行
       javascriptMode: JavascriptMode.unrestricted,
       //JS和Flutter通信的Channel
-      javascriptChannels: <JavascriptChannel>{
-        _toasterJavascriptChannel(context)
-      },
+      javascriptChannels: <JavascriptChannel>[
+        _serialJavascriptChannel(),
+        _tokenJavascriptChannel(),
+        _speedJavascriptChannel(),
+        _encryptJavascriptChannel(),
+
+        
+      ].toSet(),
       //路由委托（可以通过在此处拦截url实现JS调用Flutter部分）
       navigationDelegate: (NavigationRequest request) {
         print('allowing navigation to $request');
@@ -69,21 +76,59 @@ class _SettingHomePageState extends State<SettingHomePage> {
       },
     );
   }
+
   //android,ios端设置序列号
   setSerialNum(JavascriptMessage resp) {
-
+    // ManagerUtils.instance.saveSeriesNumber(number);
+    // ManagerUtils.instance.saveSeriesNumberKey(number);
   }
 
+  //设置token
+  setToken(JavascriptMessage resp){
+
+
+  }
+  //设置及速率
+  setSpeed(JavascriptMessage resp){
+    //ManagerUtils.instance.saveRate(rate);
+  }
+
+  //调用SM4设置h5页面的加密操作
+  setEncrypt(JavascriptMessage resp){
+    // String encryptResult = SM4Utils.getDecryptData(ebcEncryptData, key);
+    // _flutterEncryptJsChannel(encryptResult);
+  }
+
+
+
   //js调用flutter-----通知前端修改序列号并缓存
-  JavascriptChannel _toasterJavascriptChannel(BuildContext context) {
+  JavascriptChannel _serialJavascriptChannel() {
     return JavascriptChannel(
         name: 'setSerialNum', onMessageReceived: setSerialNum);
   }
 
+  //js调用flutter-----通知前端token过去，重新请求接口获取最新token
+  JavascriptChannel _tokenJavascriptChannel() {
+    return JavascriptChannel(
+        name: 'setToken', onMessageReceived: setSerialNum);
+  }
+
+  //js调用flutter-----通知前端修改扫描成功弹窗显示倒计时速度
+  JavascriptChannel _speedJavascriptChannel() {
+    return JavascriptChannel(
+        name: 'setSpeed', onMessageReceived: setSerialNum);
+  }
+
+  //js调用flutter-----通知前端对参数进行加密操作
+  JavascriptChannel _encryptJavascriptChannel() {
+    return JavascriptChannel(
+        name: 'setEncrypt', onMessageReceived: setSerialNum);
+  }
+
   //flutter调用js------设置加密
-  void _toasterFlutterChannel(String encryption) {
+  void _flutterEncryptJsChannel(String encrypt) {
     if (_controller == null) return;
-    _controller.runJavascript('setEncryption($encryption)').then((result) {
+    _controller.runJavascript('setEncrypt($encrypt)').then((result) {
       // You can handle JS result here.
     });
   }
