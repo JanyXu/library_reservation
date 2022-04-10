@@ -12,6 +12,7 @@ import 'package:library_reservation/setting/theme.dart';
 import 'package:library_reservation/ui/pages/scan/scan_code_main.dart';
 import 'package:library_reservation/ui/widgets/dialog_listener.dart';
 import 'package:provider/provider.dart';
+import 'package:sm_crypto/sm_crypto.dart';
 import 'core/model/dic_data_entity.dart';
 import 'dart:async';
 
@@ -42,7 +43,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-  bool falg = true;
+  bool flag = true;
   @override
   Widget build(BuildContext context) {
     // _getCheckVersion().then((value) {
@@ -63,13 +64,13 @@ class MyApp extends StatelessWidget {
     // });
 
 
-    initPlatformState().then((value) {
-      if(null == value) return;
-      if(falg) {
-        falg = false;
-        _getActivityValue();
-      }
-    });
+    // initPlatformState().then((value) {
+    //   if(null == value) return;
+    //   if(flag) {
+    //     flag = false;
+    //     _getActivityValue();
+    //   }
+    // });
     // if(falg) {
     //   _getActivityValue().then((value) {
     //     int terminalId= value['terminalId'];
@@ -80,6 +81,37 @@ class MyApp extends StatelessWidget {
     // }
 
     //_getTest().then((value) => {});
+    return MaterialApp(
+      theme: ScanTheme.lightTheme,
+      darkTheme: ScanTheme.darkTheme,
+      title: '扫码助手',
+      // initialRoute: XBRouter.initialRoute,
+      // routes: XBRouter.routes,
+      home: FutureBuilder<Map<String, dynamic>?>(
+        future: initPlatformState(),
+        builder: (ctx , snapshot) {
+          if (!snapshot.hasData) return SizedBox(height: 0);
+          print('device-=-=-=-=-=-=--=-=-=-${ManagerUtils.instance.deviceId}');
+          // return HomePage();
+          return MyHomePage(title: '扫码助手',);
+        }
+      )
+    );
+    return FutureBuilder<Map<String, dynamic>?>(
+      future: initPlatformState(),
+      builder: (ctx , snapshot){
+        if (!snapshot.hasData) return SizedBox(height: 0);
+        return MaterialApp(
+          theme: ScanTheme.lightTheme,
+          darkTheme: ScanTheme.darkTheme,
+          title: '扫码助手',
+          // initialRoute: XBRouter.initialRoute,
+          // routes: XBRouter.routes,
+          home: HomePage(),
+          // home: MyHomePage(title: '扫码助手',),
+        );
+      },
+    );
     return MaterialApp(
       theme: ScanTheme.lightTheme,
       darkTheme: ScanTheme.darkTheme,
@@ -139,7 +171,7 @@ class MyApp extends StatelessWidget {
     Map<String, dynamic> map = {
 
       "deviceId":ManagerUtils.instance.deviceMap==null?"123":ManagerUtils.instance.deviceMap!['device'],
-      "terminalKey":"008ED075261C466E8D9B10739AF3B19B"
+      "terminalKey":"6D934E96B1F54D76812B4CC3C61AF259"
     };
     final result =
     await HttpUtil.instance.post(ApiConfig.activate, data: map);
@@ -175,9 +207,11 @@ class MyApp extends StatelessWidget {
     try {
       if (Platform.isAndroid) {
         deviceData = _readAndroidBuildData(await deviceInfoPlugin.androidInfo);
+        ManagerUtils.instance.deviceId = deviceData['device'];
       } else if (Platform.isIOS) {
         //print("设备号ios-------${_readIosDeviceInfo(await deviceInfoPlugin.iosInfo)}");
         deviceData = _readIosDeviceInfo(await deviceInfoPlugin.iosInfo);
+        ManagerUtils.instance.deviceId = deviceData['identifierForVendor'];
       }
     } on PlatformException {
       deviceData = <String, dynamic>{
@@ -342,7 +376,18 @@ class _MyHomePageState extends State<MyHomePage>  implements OnDialogClickListen
             child: Container(
               child: ElevatedButton(
                 onPressed: (){
-                  _openAlertDialog(context);
+                  // _openAlertDialog(context);
+                  String key = SM4.createHexKey(key: 'DE9CF236992B4D77');
+                  String ebctData = '[102, 76, 1, 27, 26, 113, 74, 146, 231, 159, 108, 164, 73, 182, 115, 224, 120, 154, 37, 43, 125, 72, 251, 48, 181, 40, 192, 217, 183, 193, 227, 95, 132, 208, 114, 40, 110, 102, 183, 240, 9, 145, 193, 53, 33, 9, 117, 242, 98, 107, 71, 250, 173, 177, 118, 229, 248, 14, 191, 244, 89, 36, 64, 247, 153, 38, 99, 91, 141, 191, 180, 210, 151, 61, 148, 59, 104, 23, 246, 159]';
+                  String ebcDecryptData = SM4.decrypt(
+                      data: ebctData,
+                      key: key,
+                      padding: SM4PaddingMode.PKCS5,
+                      mode: SM4CryptoMode.ECB,
+                      iv: key
+
+                  );
+                  print('🔑 EBC DecryptData:\n $ebcDecryptData');
                 },
                 child: Text('dadsadsa'),
               ),
