@@ -88,8 +88,8 @@ class MyApp extends StatelessWidget {
       theme: ScanTheme.lightTheme,
       darkTheme: ScanTheme.darkTheme,
       title: '扫码助手',
-      // initialRoute: XBRouter.initialRoute,
-      // routes: XBRouter.routes,
+      initialRoute: XBRouter.initialRoute,
+      routes: XBRouter.routes,
       home: FutureBuilder<Map<String, dynamic>?>(
         future: initPlatformState(),
         builder: (ctx , snapshot) {
