@@ -13,6 +13,10 @@ buildscript {
         maven {
             allowInsecureProtocol = true
             url 'http://maven.aliyun.com/nexus/content/groups/public' }
+
+        maven {
+            allowInsecureProtocol = true
+            url 'http://download.flutter.io'}
         //jcenter()
     }
 
@@ -34,6 +38,9 @@ allprojects {
         maven {
             allowInsecureProtocol = true
             url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://download.flutter.io'}
     }
 }
 

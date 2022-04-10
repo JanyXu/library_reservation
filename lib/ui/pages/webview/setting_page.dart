@@ -69,8 +69,10 @@ class _SettingHomePageState extends State<SettingHomePage> {
       },
     );
   }
+  //android,ios端设置序列号
+  setSerialNum(JavascriptMessage resp) {
 
-  setSerialNum(JavascriptMessage resp) {}
+  }
 
   //js调用flutter-----通知前端修改序列号并缓存
   JavascriptChannel _toasterJavascriptChannel(BuildContext context) {
