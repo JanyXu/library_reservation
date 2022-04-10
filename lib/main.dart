@@ -22,13 +22,15 @@ import 'core/service/network/network.dart';
 
 import 'package:library_reservation/core/model/dic_data_value_entity.dart';
 
+import 'home_page.dart';
 import 'ui/pages/scan/dialog.dart';
 
 void main() {
   // runApp(MultiProvider(child: MyApp(), providers: [
   //   ChangeNotifierProvider(create: (ctx) => TestProviderModel())
   // ]));
-  runApp( MyApp());
+
+  runApp( SCMyApp());
   if(Platform.isAndroid){
     SystemUiOverlayStyle style = SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -39,6 +41,7 @@ void main() {
     );
     SystemChrome.setSystemUIOverlayStyle(style);
   }
+
 }
 
 class MyApp extends StatelessWidget {
@@ -56,8 +59,8 @@ class MyApp extends StatelessWidget {
     //   //   return;
     //   // }
     //   // _getDicValue().then((value) {
-    //   //   ManagerUtils.instance.saveDicValue('$dicCode$version', value.dicValue);
-    //   //   ManagerUtils.instance.saveDicVersion(version, dicCode);
+    //     ManagerUtils.instance.saveDicValue('$dicCode$version', value.dicValue);
+    //     ManagerUtils.instance.saveDicVersion(version, dicCode);
     //   //   print('读取接口数据');
     //   // });
     //
