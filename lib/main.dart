@@ -92,8 +92,8 @@ class MyApp extends StatelessWidget {
         builder: (ctx , snapshot) {
           if (!snapshot.hasData) return SizedBox(height: 0);
           print('device-=-=-=-=-=-=--=-=-=-${ManagerUtils.instance.deviceId}');
-          // return HomePage();
-          return MyHomePage(title: '扫码助手',);
+          return HomePage();
+          // return MyHomePage(title: '扫码助手',);
         }
       )
     );
