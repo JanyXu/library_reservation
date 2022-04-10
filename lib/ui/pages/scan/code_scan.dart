@@ -11,11 +11,12 @@ import 'package:library_reservation/ui/widgets/dialog_listener.dart';
 import 'package:library_reservation/utils/SM4_Util.dart';
 import 'package:provider/provider.dart';
 import 'package:sm_crypto/sm_crypto.dart';
+import '../../../core/model/scan_result_entity.dart';
 import '../../../core/service/config/api_config.dart';
 import '../../../core/service/network/network.dart';
 import 'dialog.dart';
 import 'package:wakelock/wakelock.dart';
-
+import 'dart:convert' as convert;
 void main() {
   runApp(MaterialApp(home: CodeScannerHome()));
 }
@@ -168,8 +169,10 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
                         dialogFlag = true;
                         en = snapshot.data!;
                         // controller.stopScan();
-                        _getScanValue();
-                        _openAlertDialog(context);
+                        _getScanValue().then((value) {
+                          _openAlertDialog(context,value!);
+                        });
+                        ;
                         play(remindVoice);
                         audioFlag = true;
                       });
@@ -244,7 +247,7 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
         ));
   }
 
-  Future<void> _getScanValue() async {
+  Future<ScanResultEntity?> _getScanValue() async {
     // en = '6000001010644929.YKM11649330125V01.02.1156D755EB429E2AB7777CD43A01C2D4';
     if (!en.isEmpty) {
       print('源码======' + en);
@@ -256,22 +259,26 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
       print('🔒 EBC EncryptptData:\n $ebcEncryptData');
       Map<String, dynamic> map = {"code": ebcEncryptData};
       final result = await HttpUtil.instance.post(ApiConfig.scan, data: map);
-      // print('result=========$result');
-      //String str = json.encode(result.data);
-      //DicDataEntity dataEntity = DicDataEntity().fromJson(result.data['data'][0]);
-      //print('解密信息========${SM4Utils.getDecryptData(result.data, key)}');
+      String enResult = SM4Utils.getDecryptData(result.data['data'], key);
+      Map<String, dynamic> user = convert.jsonDecode(enResult);
+      final data = ScanResultEntity().fromJson(user);
+      //  print('result=========$result');
+      // //String str = json.encode(result.data);
+      // //DicDataEntity dataEntity = DicDataEntity().fromJson(result.data['data'][0]);
+      // print('解密信息========${SM4Utils.getDecryptData(result.data['data'], key)}');
 
-      //return str;
+      return data;
     }
-    //return "";
+
+    return ScanResultEntity();
   }
 
-  Future _openAlertDialog(BuildContext context) async {
+  Future _openAlertDialog(BuildContext context,ScanResultEntity scanResultEntity) async {
     return showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return SCDialog(this);
+        return SCDialog(this,scanResultEntity);
       },
     );
   }

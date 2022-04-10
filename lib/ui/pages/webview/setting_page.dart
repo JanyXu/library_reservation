@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:library_reservation/core/service/utils/manager_utils.dart';
-import 'package:library_reservation/setting/theme.dart';
-import 'package:library_reservation/utils/SM4_Util.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import '../../../core/service/config/api_config.dart';
+import '../../../core/service/network/network.dart';
 
 main() => runApp(SettingPage());
 
@@ -25,6 +24,15 @@ class SettingHomePage extends StatefulWidget {
   State<SettingHomePage> createState() => _SettingHomePageState();
 }
 
+//获取最新token
+Future<Map<String, dynamic>> _getLatestToken() async {
+  //Map<String, dynamic> map = {"codes": Common.dic_code};
+  final result = await HttpUtil.instance
+      .get(ApiConfig.getToken);
+  Map<String, dynamic> resultData = result.data['data'][0];
+  return resultData;
+}
+
 class _SettingHomePageState extends State<SettingHomePage> {
   late WebViewController _controller;
 
@@ -41,7 +49,15 @@ class _SettingHomePageState extends State<SettingHomePage> {
         centerTitle: true,
         title: Text('设置'),
       ),
-      body: initWebView(context),
+      body:
+        FutureBuilder(
+          future: _getLatestToken(),
+          builder: (BuildContext childContext, AsyncSnapshot<dynamic> snapshot) {
+            return initWebView(context);
+          },
+
+        )
+     // initWebView(context),
     );
   }
 
@@ -56,8 +72,6 @@ class _SettingHomePageState extends State<SettingHomePage> {
         _tokenJavascriptChannel(),
         _speedJavascriptChannel(),
         _encryptJavascriptChannel(),
-
-        
       ].toSet(),
       //路由委托（可以通过在此处拦截url实现JS调用Flutter部分）
       navigationDelegate: (NavigationRequest request) {
@@ -66,7 +80,7 @@ class _SettingHomePageState extends State<SettingHomePage> {
       },
       //手势监听
       gestureNavigationEnabled: true,
-      initialUrl: "https://www.callmysoft.com/",
+      initialUrl: "https://www.callmysoft.com/",//等待token请求完毕在链接后拼接最新token
       //加载进度
       onProgress: (int progress) {
         print("WebView is loading (progress : $progress%)");
@@ -84,22 +98,18 @@ class _SettingHomePageState extends State<SettingHomePage> {
   }
 
   //设置token
-  setToken(JavascriptMessage resp){
+  setToken(JavascriptMessage resp) {}
 
-
-  }
   //设置及速率
-  setSpeed(JavascriptMessage resp){
+  setSpeed(JavascriptMessage resp) {
     //ManagerUtils.instance.saveRate(rate);
   }
 
   //调用SM4设置h5页面的加密操作
-  setEncrypt(JavascriptMessage resp){
+  setEncrypt(JavascriptMessage resp) {
     // String encryptResult = SM4Utils.getDecryptData(ebcEncryptData, key);
     // _flutterEncryptJsChannel(encryptResult);
   }
-
-
 
   //js调用flutter-----通知前端修改序列号并缓存
   JavascriptChannel _serialJavascriptChannel() {
@@ -109,14 +119,12 @@ class _SettingHomePageState extends State<SettingHomePage> {
 
   //js调用flutter-----通知前端token过去，重新请求接口获取最新token
   JavascriptChannel _tokenJavascriptChannel() {
-    return JavascriptChannel(
-        name: 'setToken', onMessageReceived: setSerialNum);
+    return JavascriptChannel(name: 'setToken', onMessageReceived: setSerialNum);
   }
 
   //js调用flutter-----通知前端修改扫描成功弹窗显示倒计时速度
   JavascriptChannel _speedJavascriptChannel() {
-    return JavascriptChannel(
-        name: 'setSpeed', onMessageReceived: setSerialNum);
+    return JavascriptChannel(name: 'setSpeed', onMessageReceived: setSerialNum);
   }
 
   //js调用flutter-----通知前端对参数进行加密操作
@@ -131,5 +139,11 @@ class _SettingHomePageState extends State<SettingHomePage> {
     _controller.runJavascript('setEncrypt($encrypt)').then((result) {
       // You can handle JS result here.
     });
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
   }
 }
