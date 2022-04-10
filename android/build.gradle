@@ -1,6 +1,9 @@
 buildscript {
     ext.kotlin_version = '1.5.21'
     repositories {
+
+//        google()
+//        mavenCentral()
         maven {
             allowInsecureProtocol = true
             url 'https://maven.aliyun.com/repository/google' }
@@ -10,6 +13,11 @@ buildscript {
         maven {
             allowInsecureProtocol = true
             url 'http://maven.aliyun.com/nexus/content/groups/public' }
+
+        maven {
+            allowInsecureProtocol = true
+            url 'http://download.flutter.io'}
+        //jcenter()
     }
 
     dependencies {
@@ -25,10 +33,14 @@ allprojects {
             url 'https://maven.aliyun.com/repository/google' }
         maven {
             allowInsecureProtocol = true
-            url 'https://maven.aliyun.com/repository/jcenter' }
+            url 'https://maven.aliyun.com/repository/jcenter'
+        }
         maven {
             allowInsecureProtocol = true
             url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://download.flutter.io'}
     }
 }
 
