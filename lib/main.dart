@@ -9,7 +9,7 @@ import 'package:library_reservation/core/service/utils/common.dart';
 import 'package:library_reservation/core/service/utils/manager_utils.dart';
 import 'package:library_reservation/provide_model/scan_speed_provide_model.dart';
 import 'package:library_reservation/setting/theme.dart';
-import 'package:library_reservation/ui/pages/scan/scan_code_main.dart';
+import 'package:library_reservation/ui/pages/home/home_page.dart';
 import 'package:library_reservation/ui/widgets/dialog_listener.dart';
 import 'package:provider/provider.dart';
 import 'package:sm_crypto/sm_crypto.dart';
@@ -22,15 +22,15 @@ import 'core/service/network/network.dart';
 
 import 'package:library_reservation/core/model/dic_data_value_entity.dart';
 
-import 'home_page.dart';
-import 'ui/pages/scan/dialog.dart';
+import 'sc_my_app.dart';
+import 'ui/widgets/dialog.dart';
 
 void main() {
   // runApp(MultiProvider(child: MyApp(), providers: [
   //   ChangeNotifierProvider(create: (ctx) => TestProviderModel())
   // ]));
 
-  runApp( SCMyApp());
+  runApp( MyApp());
   if(Platform.isAndroid){
     SystemUiOverlayStyle style = SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -90,15 +90,16 @@ class MyApp extends StatelessWidget {
       title: '扫码助手',
       initialRoute: XBRouter.initialRoute,
       routes: XBRouter.routes,
-      home: FutureBuilder<Map<String, dynamic>?>(
-        future: initPlatformState(),
-        builder: (ctx , snapshot) {
-          if (!snapshot.hasData) return SizedBox(height: 0);
-          print('device-=-=-=-=-=-=--=-=-=-${ManagerUtils.instance.deviceId}');
-          return HomePage();
-          // return MyHomePage(title: '扫码助手',);
-        }
-      )
+        onGenerateRoute: XBRouter.generateRoute,
+      // home: FutureBuilder<Map<String, dynamic>?>(
+      //   future: initPlatformState(),
+      //   builder: (ctx , snapshot) {
+      //     if (!snapshot.hasData) return SizedBox(height: 0);
+      //     print('device-=-=-=-=-=-=--=-=-=-${ManagerUtils.instance.deviceId}');
+      //     return HomePage();
+      //     // return MyHomePage(title: '扫码助手',);
+      //   }
+      // )
     );
     return FutureBuilder<Map<String, dynamic>?>(
       future: initPlatformState(),

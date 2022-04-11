@@ -14,7 +14,7 @@ import 'package:sm_crypto/sm_crypto.dart';
 import '../../../core/model/scan_result_entity.dart';
 import '../../../core/service/config/api_config.dart';
 import '../../../core/service/network/network.dart';
-import 'dialog.dart';
+import '../../widgets/dialog.dart';
 import 'package:wakelock/wakelock.dart';
 import 'dart:convert' as convert;
 void main() {

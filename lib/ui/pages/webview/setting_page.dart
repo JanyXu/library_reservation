@@ -1,8 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:library_reservation/core/model/token_entity.dart';
+import 'package:sm_crypto/sm_crypto.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../../core/service/config/api_config.dart';
 import '../../../core/service/network/network.dart';
+import '../../../core/service/utils/manager_utils.dart';
+import '../../../utils/SM4_Util.dart';
+import 'dart:convert' as convert;
 
 main() => runApp(SettingPage());
 
@@ -25,12 +30,22 @@ class SettingHomePage extends StatefulWidget {
 }
 
 //获取最新token
-Future<Map<String, dynamic>> _getLatestToken() async {
+Future<String> _getLatestToken() async {
   //Map<String, dynamic> map = {"codes": Common.dic_code};
-  final result = await HttpUtil.instance
-      .get(ApiConfig.getToken);
-  Map<String, dynamic> resultData = result.data['data'][0];
-  return resultData;
+  final result = await HttpUtil.instance.get(ApiConfig.getToken);
+  //Map<String, dynamic> resultData = result.data['data'][0];
+  String localKey =
+      ManagerUtils.instance.getSeriesNumberKey()!.substring(0, 16);
+  print('num======' + Utils.getSettingUrl()!);
+  String key = SM4.createHexKey(key: localKey);
+  String enResult = SM4Utils.getDecryptData(result.data['data'], key);
+  print(enResult);
+  Map<String, dynamic> map_result = convert.jsonDecode(enResult);
+  TokenEntity dataEntity = TokenEntity().fromJson(map_result);
+  print('token========' +
+      dataEntity.accessToken! +
+      "-----");
+  return enResult;
 }
 
 class _SettingHomePageState extends State<SettingHomePage> {
@@ -39,25 +54,25 @@ class _SettingHomePageState extends State<SettingHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: GestureDetector(
-          child: Icon(CupertinoIcons.left_chevron),
-          onTap: () {
-            Navigator.of(context).pop();
-          },
+        appBar: AppBar(
+          leading: GestureDetector(
+            child: Icon(CupertinoIcons.left_chevron),
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          centerTitle: true,
+          title: Text('设置'),
         ),
-        centerTitle: true,
-        title: Text('设置'),
-      ),
-      body:
-        FutureBuilder(
+        body: FutureBuilder(
           future: _getLatestToken(),
-          builder: (BuildContext childContext, AsyncSnapshot<dynamic> snapshot) {
+          builder:
+              (BuildContext childContext, AsyncSnapshot<dynamic> snapshot) {
             return initWebView(context);
           },
         )
-     // initWebView(context),
-    );
+        // initWebView(context),
+        );
   }
 
   /// 初始化webview
@@ -79,7 +94,8 @@ class _SettingHomePageState extends State<SettingHomePage> {
       },
       //手势监听
       gestureNavigationEnabled: true,
-      initialUrl: "https://www.callmysoft.com/",//等待token请求完毕在链接后拼接最新token
+      initialUrl: "https://www.callmysoft.com/",
+      //等待token请求完毕在链接后拼接最新token
       //加载进度
       onProgress: (int progress) {
         print("WebView is loading (progress : $progress%)");
@@ -139,10 +155,10 @@ class _SettingHomePageState extends State<SettingHomePage> {
       // You can handle JS result here.
     });
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-
   }
 }
