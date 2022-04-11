@@ -260,9 +260,10 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
       Map<String, dynamic> map = {"code": ebcEncryptData};
       final result = await HttpUtil.instance.post(ApiConfig.scan, data: map);
       String enResult = SM4Utils.getDecryptData(result.data['data'], key);
+
       Map<String, dynamic> user = convert.jsonDecode(enResult);
       final data = ScanResultEntity().fromJson(user);
-      //  print('result=========$result');
+      print('enResult=========$enResult');
       // //String str = json.encode(result.data);
       // //DicDataEntity dataEntity = DicDataEntity().fromJson(result.data['data'][0]);
       // print('解密信息========${SM4Utils.getDecryptData(result.data['data'], key)}');

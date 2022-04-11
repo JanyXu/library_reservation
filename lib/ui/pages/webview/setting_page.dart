@@ -55,7 +55,6 @@ class _SettingHomePageState extends State<SettingHomePage> {
           builder: (BuildContext childContext, AsyncSnapshot<dynamic> snapshot) {
             return initWebView(context);
           },
-
         )
      // initWebView(context),
     );
