@@ -94,7 +94,7 @@ class _SettingHomePageState extends State<SettingHomePage> {
       },
       //手势监听
       gestureNavigationEnabled: true,
-      initialUrl: "https://www.callmysoft.com/",
+      initialUrl: Utils.getSettingUrl()!,
       //等待token请求完毕在链接后拼接最新token
       //加载进度
       onProgress: (int progress) {

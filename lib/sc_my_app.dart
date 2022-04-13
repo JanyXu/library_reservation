@@ -21,19 +21,28 @@ class SCMyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     initPlatformState();
-    return FutureBuilder<DicDataEntity>(
-            future: _getDicValue(),
-            builder: (ctx , snapshot) {
-              if (!snapshot.hasData) return Scaffold(
-                appBar: AppBar(
-                  title: Text("扫码助手"),
-                ),
-                body: Container(),
-              );
-              return HomePage();
-              // return MyHomePage(title: '扫码助手',);
-            }
-        );
+    return
+
+      Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/main_ground.png'),
+              fit: BoxFit.cover,
+            )),
+        child: FutureBuilder<DicDataEntity>(
+              future: _getDicValue(),
+              builder: (ctx , snapshot) {
+                if (!snapshot.hasData) return Scaffold(
+                  appBar: AppBar(
+                    title: Text("扫码助手"),
+                  ),
+                  body: Container(),
+                );
+                return HomePage();
+                // return MyHomePage(title: '扫码助手',);
+              }
+          ),
+      );
   }
 
   //判断版本号

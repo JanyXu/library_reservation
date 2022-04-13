@@ -20,14 +20,16 @@ class ScanTheme {
       highlightColor: Colors.transparent,
       //去除点击tabbar的过度效果
       // brightness: Brightness.light,//亮度，明亮模式
-      primarySwatch: Colors.blue,
+      //primarySwatch: Colors.blue,
       // primaryColor: Colors.red,//主要决定导航和底部bottombar颜色
       //   accentColor: Colors.blue,//button和switch等颜色
       textTheme: textTheme,
+      backgroundColor: Colors.transparent,
       buttonTheme: ButtonThemeData(height: 25, minWidth: 10),
       cardTheme: CardTheme(color: cardColorLight, elevation: 20));
 
   static final ThemeData darkTheme = ThemeData(
+    colorScheme: colorScheme,
       splashColor: Colors.transparent,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       highlightColor: Colors.transparent,
@@ -49,6 +51,7 @@ class ScanTheme {
           ),
       buttonTheme: ButtonThemeData(height: 25, minWidth: 10),
       cardTheme: CardTheme(color: cardColorDark, elevation: 20));
+
   static ColorScheme colorScheme = const ColorScheme(
       primary: Colors.white,
       //上方标题栏颜色

@@ -7,11 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:library_reservation/core/service/utils/common.dart';
 import 'package:library_reservation/core/service/utils/manager_utils.dart';
-import 'package:library_reservation/provide_model/scan_speed_provide_model.dart';
 import 'package:library_reservation/setting/theme.dart';
 import 'package:library_reservation/ui/pages/home/home_page.dart';
 import 'package:library_reservation/ui/widgets/dialog_listener.dart';
-import 'package:provider/provider.dart';
 import 'package:sm_crypto/sm_crypto.dart';
 import 'core/model/dic_data_entity.dart';
 import 'dart:async';
@@ -88,9 +86,11 @@ class MyApp extends StatelessWidget {
       theme: ScanTheme.lightTheme,
       darkTheme: ScanTheme.darkTheme,
       title: '扫码助手',
+      color: Colors.transparent,
       initialRoute: XBRouter.initialRoute,
       routes: XBRouter.routes,
         onGenerateRoute: XBRouter.generateRoute,
+
       // home: FutureBuilder<Map<String, dynamic>?>(
       //   future: initPlatformState(),
       //   builder: (ctx , snapshot) {
