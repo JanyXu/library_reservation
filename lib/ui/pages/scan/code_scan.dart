@@ -5,6 +5,7 @@ import 'package:code_scanner/code_scanner.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:library_reservation/core/service/utils/manager_utils.dart';
 import 'package:library_reservation/ui/widgets/dialog_listener.dart';
 import 'package:library_reservation/utils/SM4_Util.dart';
@@ -24,7 +25,7 @@ class CodeScannerHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('scanner example'),
+        title: Text('扫一扫'),
         elevation: 0,
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -102,7 +103,7 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
           backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
-          title: Text('QR Scanner'),
+          title: Text('扫一扫'),
           leading: IconButton(
             key: Key('closeButton'),
             icon: const Icon(
@@ -168,11 +169,18 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
                         en = snapshot.data!;
                         // controller.stopScan();
                         _getScanValue().then((value) {
-                          _openAlertDialog(context,value!);
+                          ScanResultEntity? scanResult= value;
+                          if(scanResult!=null && scanResult.userName!=null) {
+                            play(remindVoice);
+                            audioFlag = true;
+                            _openAlertDialog(context, value!);
+                          } else {
+                            dialogFlag = false;
+                            Fluttertoast.showToast(msg: '未知二维码');
+                          }
                         });
                         ;
-                        play(remindVoice);
-                        audioFlag = true;
+
                       });
 
                       // controller.stopScan();
@@ -257,16 +265,23 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
       print('🔒 EBC EncryptptData:\n $ebcEncryptData');
       Map<String, dynamic> map = {"code": ebcEncryptData};
       final result = await HttpUtil.instance.post(ApiConfig.scan, data: map);
-      String enResult = SM4Utils.getDecryptData(result.data['data'], key);
+      if(result.statusCode !=200) {
+        return ScanResultEntity();
+      } else {
+        if(result.data ==null ||result.data['data'] ==null) {
+          return ScanResultEntity();
+        }
+        String enResult = SM4Utils.getDecryptData(result.data['data'], key);
 
-      Map<String, dynamic> user = convert.jsonDecode(enResult);
-      final data = ScanResultEntity().fromJson(user);
-      print('enResult=========$enResult');
-      // //String str = json.encode(result.data);
-      // //DicDataEntity dataEntity = DicDataEntity().fromJson(result.data['data'][0]);
-      // print('解密信息========${SM4Utils.getDecryptData(result.data['data'], key)}');
+        Map<String, dynamic> user = convert.jsonDecode(enResult);
+        final data = ScanResultEntity().fromJson(user);
+        print('enResult=========$enResult');
+        // //String str = json.encode(result.data);
+        // //DicDataEntity dataEntity = DicDataEntity().fromJson(result.data['data'][0]);
+        // print('解密信息========${SM4Utils.getDecryptData(result.data['data'], key)}');
 
-      return data;
+        return data;
+      }
     }
 
     return ScanResultEntity();
