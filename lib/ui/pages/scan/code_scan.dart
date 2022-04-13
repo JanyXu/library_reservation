@@ -176,7 +176,7 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
                             _openAlertDialog(context, value!);
                           } else {
                             dialogFlag = false;
-                            Fluttertoast.showToast(msg: '未知二维码');
+                            Fluttertoast.showToast(msg: '网络错误');
                           }
                         });
                         ;
@@ -267,21 +267,29 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
       final result = await HttpUtil.instance.post(ApiConfig.scan, data: map);
       if(result.statusCode !=200) {
         return ScanResultEntity();
-      } else {
-        if(result.data ==null ||result.data['data'] ==null) {
-          return ScanResultEntity();
-        }
-        String enResult = SM4Utils.getDecryptData(result.data['data'], key);
-
-        Map<String, dynamic> user = convert.jsonDecode(enResult);
-        final data = ScanResultEntity().fromJson(user);
-        print('enResult=========$enResult');
-        // //String str = json.encode(result.data);
-        // //DicDataEntity dataEntity = DicDataEntity().fromJson(result.data['data'][0]);
-        // print('解密信息========${SM4Utils.getDecryptData(result.data['data'], key)}');
-
-        return data;
       }
+      if(result.data == null) {
+        return ScanResultEntity();
+      }
+
+      if (result.data['code'].toString() == '10001' || result.data['code'].toString() == '10009'){
+        ScanResultEntity resultEntity = ScanResultEntity();
+        resultEntity.userName = result.data['msg'];
+        resultEntity.certNo = ebcEncryptData;
+        resultEntity.resultDicCode = 'other';
+        return resultEntity;
+      }
+
+      String enResult = SM4Utils.getDecryptData(result.data['data'], key);
+
+      Map<String, dynamic> user = convert.jsonDecode(enResult);
+      final data = ScanResultEntity().fromJson(user);
+      print('enResult=========$enResult');
+      // //String str = json.encode(result.data);
+      // //DicDataEntity dataEntity = DicDataEntity().fromJson(result.data['data'][0]);
+      // print('解密信息========${SM4Utils.getDecryptData(result.data['data'], key)}');
+
+      return data;
     }
 
     return ScanResultEntity();

@@ -92,6 +92,7 @@ class _SettingHomePageState extends State<SettingHomePage> {
 
   /// 初始化webview
   initWebView(context) {
+    print(Utils.getSettingUrl()! + '?token=$token&id=$id');
     return WebView(
       //是否允许js执行
       javascriptMode: JavascriptMode.unrestricted,
