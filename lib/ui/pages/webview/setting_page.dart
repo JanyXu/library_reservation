@@ -66,24 +66,26 @@ class _SettingHomePageState extends State<SettingHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          leading: GestureDetector(
-            child: Icon(CupertinoIcons.left_chevron),
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          centerTitle: true,
-          title: Text('设置'),
-        ),
-        body: FutureBuilder(
+    return
+      // Scaffold(
+      //   appBar: AppBar(
+      //     leading: GestureDetector(
+      //       child: Icon(CupertinoIcons.left_chevron),
+      //       onTap: () {
+      //         Navigator.of(context).pop();
+      //       },
+      //     ),
+      //     centerTitle: true,
+      //     title: Text('设置'),
+      //   ),
+      //   body:
+        FutureBuilder(
           future: _getLatestToken(),
           builder:
               (BuildContext childContext, AsyncSnapshot<dynamic> snapshot) {
             return initWebView(context);
           },
-        )
+       // )
         // initWebView(context),
         );
   }
