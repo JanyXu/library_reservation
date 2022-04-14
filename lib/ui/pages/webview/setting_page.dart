@@ -242,8 +242,9 @@ class _SettingHomePageState extends State<SettingHomePage> {
       backEntity.success = 'true';
       backEntity.token = res.data['data']['token'];
       backEntity.terminalId = res.data['data']['terminalId'];
+      //getBoundSerialResult里面y要传字符串，不是对象，要用双引号包裹
       _controller
-          .runJavascript('getBoundSerialResult($backEntity)')
+          .runJavascript('getBoundSerialResult("${convert.json.encode(backEntity.toJson())}")')
           .then((result) {
         // You can handle JS result here.
       });
@@ -269,7 +270,7 @@ class _SettingHomePageState extends State<SettingHomePage> {
       // }
     }
       _controller
-          .runJavascript('getBoundSerialResult($backEntity)')
+          .runJavascript('getBoundSerialResult("${convert.json.encode(backEntity.toJson())}")')
           .then((result) {
         // You can handle JS result here.
       });
