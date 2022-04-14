@@ -28,6 +28,18 @@ class CodeScannerHome extends StatelessWidget {
         title: Text('扫一扫'),
         elevation: 0,
         centerTitle: true,
+        leading: GestureDetector(
+          child: Icon(CupertinoIcons.left_chevron),
+          onTap: (){
+            SystemChrome.setPreferredOrientations([
+              DeviceOrientation.portraitUp,
+              DeviceOrientation.portraitDown
+              //DeviceOrientation.landscapeRight,
+            ]).then((value) {
+              Navigator.of(context).pop();
+            });
+          },
+        ),
         backgroundColor: Colors.transparent,
       ),
       body: Center(
@@ -116,7 +128,9 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
                 DeviceOrientation.portraitDown
                 //DeviceOrientation.landscapeRight,
               ]).then((value) {
-                Navigator.pop(context, '');
+                Future.delayed(Duration(milliseconds: 500),(){
+                  Navigator.of(context).pop();
+                });
               });
             },
           ),
@@ -265,6 +279,7 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
       print('🔒 EBC EncryptptData:\n $ebcEncryptData');
       Map<String, dynamic> map = {"code": ebcEncryptData};
       final result = await HttpUtil.instance.post(ApiConfig.scan, data: map);
+
       if(result.statusCode !=200) {
         return ScanResultEntity();
       }
@@ -277,6 +292,8 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
         resultEntity.userName = result.data['msg'];
         resultEntity.certNo = ebcEncryptData;
         resultEntity.resultDicCode = 'other';
+        print('num======' + result.data['msg']+"------" + SM4Utils.getDecryptData(ebcEncryptData, key));
+        resultVoice = Utils.getTotalResultVoice(resultEntity.resultDicCode)!;
         return resultEntity;
       }
 
@@ -284,7 +301,8 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
 
       Map<String, dynamic> user = convert.jsonDecode(enResult);
       final data = ScanResultEntity().fromJson(user);
-      print('enResult=========$enResult');
+      resultVoice = Utils.getTotalResultVoice(data.resultDicCode)!;
+      //print('enResult=========${data.resultDicCode}');
       // //String str = json.encode(result.data);
       // //DicDataEntity dataEntity = DicDataEntity().fromJson(result.data['data'][0]);
       // print('解密信息========${SM4Utils.getDecryptData(result.data['data'], key)}');
