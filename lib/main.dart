@@ -211,7 +211,7 @@ class MyApp extends StatelessWidget {
     try {
       if (Platform.isAndroid) {
         deviceData = _readAndroidBuildData(await deviceInfoPlugin.androidInfo);
-        ManagerUtils.instance.deviceId = deviceData['device'];
+        ManagerUtils.instance.deviceId = deviceData['androidId'];
       } else if (Platform.isIOS) {
         //print("设备号ios-------${_readIosDeviceInfo(await deviceInfoPlugin.iosInfo)}");
         deviceData = _readIosDeviceInfo(await deviceInfoPlugin.iosInfo);

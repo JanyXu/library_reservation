@@ -23,7 +23,8 @@ void main() {
 class CodeScannerHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return
+      Scaffold(
       appBar: AppBar(
         title: Text('扫一扫'),
         elevation: 0,
@@ -110,161 +111,170 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          title: Text('扫一扫'),
-          leading: IconButton(
-            key: Key('closeButton'),
-            icon: const Icon(
-              CupertinoIcons.left_chevron,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              SystemChrome.setPreferredOrientations([
-                DeviceOrientation.portraitUp,
-                DeviceOrientation.portraitDown
-                //DeviceOrientation.landscapeRight,
-              ]).then((value) {
-                Future.delayed(Duration(milliseconds: 500),(){
-                  Navigator.of(context).pop();
-                });
-              });
+    return SafeArea(
+      child: Scaffold(
+          // appBar: AppBar(
+          //   backgroundColor: Colors.blue,
+          //   elevation: 0,
+          //   centerTitle: true,
+          //   title: Text('扫一扫'),
+          //   leading:
+          // ),
+          body: WillPopScope(
+            onWillPop: () async{
+              return false;
             },
-          ),
-        ),
-        body: Stack(
-          alignment: AlignmentDirectional.center,
-          children: [
-            CodeScanner(
-              controller: controller,
-              isScanFrame: true,
-              frameWidth: 2,
-              scanFrameSize: Size(200, 200),
-              frameColor: Colors.green,
-            ),
-            // Container(
-            //   margin: const EdgeInsets.only(bottom: 500),
-            //   padding: const EdgeInsets.all(5.0),
-            //   width: 300,
-            //   decoration: BoxDecoration(
-            //     color: Color(0xcc222222),
-            //     border: Border.all(color: Color(0xcc222222)),
-            //     borderRadius: BorderRadius.circular(10),
-            //   ),
-            // ),
-            Container(
-                // margin: const EdgeInsets.only(top: 350),
-                // padding: const EdgeInsets.all(5.0),
-                // width: 300,
-                // decoration: BoxDecoration(
-                //   color: Color(0xcc222222),
-                //   border: Border.all(color: Color(0xcc222222)),
-                //   borderRadius: BorderRadius.circular(10),
+            child: Stack(
+            //  alignment: AlignmentDirectional.center,
+              children: [
+                CodeScanner(
+                  controller: controller,
+                  isScanFrame: true,
+                  frameWidth: 2,
+                  scanFrameSize: Size(200, 200),
+                  frameColor: Colors.green,
+                ),
+                // Container(
+                //   margin: const EdgeInsets.only(bottom: 500),
+                //   padding: const EdgeInsets.all(5.0),
+                //   width: 300,
+                //   decoration: BoxDecoration(
+                //     color: Color(0xcc222222),
+                //     border: Border.all(color: Color(0xcc222222)),
+                //     borderRadius: BorderRadius.circular(10),
+                //   ),
                 // ),
-                child:
-                    // Consumer<TestProviderModel>(builder: (ctx, vm, child) {
-                    //   return
-                    StreamBuilder<String>(
-                  stream: controller.scanDataStream,
-                  builder: (context1, snapshot) {
-                    // if(snapshot.data!=null) {
-                    //   print('test=======');
-                    //   _openAlertDialog(context);
-                    // }
-                    // print('jjj');
-                    if (snapshot.hasData && !dialogFlag) {
-                      print('test=======${snapshot.data}');
-                      //vm.set_dialog_show(true);
-                      Future.delayed(Duration(seconds: 0), () async {
-                        dialogFlag = true;
-                        en = snapshot.data!;
-                        // controller.stopScan();
-                        _getScanValue().then((value) {
-                          ScanResultEntity? scanResult= value;
-                          if(scanResult!=null && scanResult.userName!=null) {
-                            play(remindVoice);
-                            audioFlag = true;
-                            _openAlertDialog(context, value!);
-                          } else {
-                            dialogFlag = false;
-                            Fluttertoast.showToast(msg: '网络错误');
-                          }
-                        });
-                        ;
+                Container(
+                    // margin: const EdgeInsets.only(top: 350),
+                    // padding: const EdgeInsets.all(5.0),
+                    // width: 300,
+                    // decoration: BoxDecoration(
+                    //   color: Color(0xcc222222),
+                    //   border: Border.all(color: Color(0xcc222222)),
+                    //   borderRadius: BorderRadius.circular(10),
+                    // ),
+                    child:
+                        // Consumer<TestProviderModel>(builder: (ctx, vm, child) {
+                        //   return
+                        StreamBuilder<String>(
+                      stream: controller.scanDataStream,
+                      builder: (context1, snapshot) {
+                        // if(snapshot.data!=null) {
+                        //   print('test=======');
+                        //   _openAlertDialog(context);
+                        // }
+                        // print('jjj');
+                        if (snapshot.hasData && !dialogFlag) {
+                          print('test=======${snapshot.data}');
+                          //vm.set_dialog_show(true);
+                          Future.delayed(Duration(seconds: 0), () async {
+                            dialogFlag = true;
+                            en = snapshot.data!;
+                            // controller.stopScan();
+                            _getScanValue().then((value) {
+                              ScanResultEntity? scanResult= value;
+                              if(scanResult!=null && scanResult.userName!=null) {
+                                play(remindVoice);
+                                audioFlag = true;
+                                _openAlertDialog(context, value!);
+                              } else {
+                                dialogFlag = false;
+                                Fluttertoast.showToast(msg: '网络错误');
+                              }
+                            });
+                            ;
 
+                          });
+
+                          // controller.stopScan();
+                        } else {
+                          //print('test=====false');
+                        }
+                        return Text(
+                          '',
+                          style: TextStyle(color: Colors.green, fontSize: 17),
+                          textAlign: TextAlign.center,
+                        );
+                      },
+                      //   );
+                      // }
+                    )),
+                // Container(
+                //   margin: const EdgeInsets.only(top: 450),
+                //   padding: const EdgeInsets.all(5.0),
+                //   width: 300,
+                //   decoration: BoxDecoration(
+                //     color: Color(0xcc222222),
+                //     border: Border.all(color: Color(0xcc222222)),
+                //     borderRadius: BorderRadius.circular(10),
+                //   ),
+                //   child: StreamBuilder<String>(
+                //       stream: controller.readDataStream,
+                //       builder: (context, snapshot) {
+                //         // _openAlertDialog(context);
+                //         return (snapshot.hasData)
+                //             ? Text(
+                //                 'Read Data: ${snapshot.data}',
+                //                 style: TextStyle(color: Colors.white, fontSize: 17),
+                //                 textAlign: TextAlign.center,
+                //               )
+                //             : Text(
+                //                 'Read Failure',
+                //                 style: TextStyle(color: Colors.white, fontSize: 17),
+                //                 textAlign: TextAlign.center,
+                //               );
+                //       }),
+                // ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                //   children: [
+                //     Container(
+                //       margin: const EdgeInsets.only(top: 600),
+                //       child: FloatingActionButton(
+                //         heroTag: "hero1",
+                //         child: Icon(Icons.lightbulb_outline),
+                //         backgroundColor: Color(0xcc222222),
+                //         onPressed: () async {
+                //           await controller.toggleLight();
+                //         },
+                //       ),
+                //     ),
+                //     Container(
+                //       margin: const EdgeInsets.only(top: 600),
+                //       child: FloatingActionButton(
+                //         heroTag: "hero2",
+                //         child: Icon(Icons.photo_library),
+                //         backgroundColor: Color(0xcc222222),
+                //         onPressed: () async {
+                //           await controller.readDataFromGallery();
+                //         },
+                //       ),
+                //     ),
+                //   ],
+                // ),
+
+                GestureDetector(
+                  child: Container(
+
+                    margin: EdgeInsets.only(left: 25,top: 20),
+                    child: Image.asset('assets/images/scan_back.png'),
+                  ),
+                  onTap: (){
+                    SystemChrome.setPreferredOrientations([
+                      DeviceOrientation.portraitUp,
+                      DeviceOrientation.portraitDown
+                      //DeviceOrientation.landscapeRight,
+                    ]).then((value) {
+                      Future.delayed(Duration(milliseconds: 500),(){
+                        Navigator.of(context).pop();
                       });
-
-                      // controller.stopScan();
-                    } else {
-                      //print('test=====false');
-                    }
-                    return Text(
-                      '',
-                      style: TextStyle(color: Colors.green, fontSize: 17),
-                      textAlign: TextAlign.center,
-                    );
+                    });
                   },
-                  //   );
-                  // }
-                )),
-            // Container(
-            //   margin: const EdgeInsets.only(top: 450),
-            //   padding: const EdgeInsets.all(5.0),
-            //   width: 300,
-            //   decoration: BoxDecoration(
-            //     color: Color(0xcc222222),
-            //     border: Border.all(color: Color(0xcc222222)),
-            //     borderRadius: BorderRadius.circular(10),
-            //   ),
-            //   child: StreamBuilder<String>(
-            //       stream: controller.readDataStream,
-            //       builder: (context, snapshot) {
-            //         // _openAlertDialog(context);
-            //         return (snapshot.hasData)
-            //             ? Text(
-            //                 'Read Data: ${snapshot.data}',
-            //                 style: TextStyle(color: Colors.white, fontSize: 17),
-            //                 textAlign: TextAlign.center,
-            //               )
-            //             : Text(
-            //                 'Read Failure',
-            //                 style: TextStyle(color: Colors.white, fontSize: 17),
-            //                 textAlign: TextAlign.center,
-            //               );
-            //       }),
-            // ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //   children: [
-            //     Container(
-            //       margin: const EdgeInsets.only(top: 600),
-            //       child: FloatingActionButton(
-            //         heroTag: "hero1",
-            //         child: Icon(Icons.lightbulb_outline),
-            //         backgroundColor: Color(0xcc222222),
-            //         onPressed: () async {
-            //           await controller.toggleLight();
-            //         },
-            //       ),
-            //     ),
-            //     Container(
-            //       margin: const EdgeInsets.only(top: 600),
-            //       child: FloatingActionButton(
-            //         heroTag: "hero2",
-            //         child: Icon(Icons.photo_library),
-            //         backgroundColor: Color(0xcc222222),
-            //         onPressed: () async {
-            //           await controller.readDataFromGallery();
-            //         },
-            //       ),
-            //     ),
-            //   ],
-            // ),
-          ],
-        ));
+                ),
+              ],
+            ),
+          )),
+    );
   }
 
   Future<ScanResultEntity?> _getScanValue() async {
@@ -287,16 +297,18 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
         return ScanResultEntity();
       }
 
-      if (result.data['code'].toString() == '10001' || result.data['code'].toString() == '10009'){
+      if (result.data['code'].toString() == '400' ||result.data['code'].toString() == '10001' || result.data['code'].toString() == '10009'){
         ScanResultEntity resultEntity = ScanResultEntity();
         resultEntity.userName = result.data['msg'];
         resultEntity.certNo = ebcEncryptData;
         resultEntity.resultDicCode = 'other';
-        print('num======' + result.data['msg']+"------" + SM4Utils.getDecryptData(ebcEncryptData, key));
+        //print('num======' + result.data['msg']+"------" + SM4Utils.getDecryptData(ebcEncryptData, key));
         resultVoice = Utils.getTotalResultVoice(resultEntity.resultDicCode)!;
         return resultEntity;
       }
+      if(result.data['data'] == null) {
 
+      }
       String enResult = SM4Utils.getDecryptData(result.data['data'], key);
 
       Map<String, dynamic> user = convert.jsonDecode(enResult);

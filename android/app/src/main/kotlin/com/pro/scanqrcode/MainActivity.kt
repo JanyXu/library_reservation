@@ -1,4 +1,4 @@
-package com.example.scanqrcode
+package com.pro.scanqrcode;
 
 import io.flutter.embedding.android.FlutterActivity
 

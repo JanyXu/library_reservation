@@ -1,4 +1,10 @@
 PODS:
+  - amap_flutter_location (0.0.1):
+    - AMapLocation
+    - Flutter
+  - AMapFoundation (1.6.9)
+  - AMapLocation (2.8.0):
+    - AMapFoundation (~> 1.6.9)
   - audioplayers (0.0.1):
     - Flutter
   - code_scanner (0.0.1):
@@ -32,6 +38,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - amap_flutter_location (from `.symlinks/plugins/amap_flutter_location/ios`)
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
   - code_scanner (from `.symlinks/plugins/code_scanner/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
@@ -47,12 +54,16 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - AMapFoundation
+    - AMapLocation
     - FMDB
     - MTBBarcodeScanner
   trunk:
     - Toast
 
 EXTERNAL SOURCES:
+  amap_flutter_location:
+    :path: ".symlinks/plugins/amap_flutter_location/ios"
   audioplayers:
     :path: ".symlinks/plugins/audioplayers/ios"
   code_scanner:
@@ -79,6 +90,9 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
+  amap_flutter_location: 44ff5beb64f42e0bf5feb402fe299dac0013af6f
+  AMapFoundation: 8d8ecbb0b2e9ce5487995360d26c885d94642bfd
+  AMapLocation: 5ef44a1117be7dc541cb7a7d43d03c5ee91e4387
   audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
   code_scanner: 70a721415d083d1bf4b25bed2b2dc7572d91680f
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
