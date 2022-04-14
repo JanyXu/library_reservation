@@ -39,7 +39,12 @@ class SCMyApp extends StatelessWidget {
                   ),
                   body: Container(),
                 );
-                return HomePage();
+                return OrientationBuilder(
+                    builder: (BuildContext context, Orientation orientation) {
+                      return orientation == Orientation.portrait ? HomePage() : Container(child: Image.asset('assets/images/main_ground.png'));
+                    }
+                );
+                   // child: HomePage());
                 // return MyHomePage(title: '扫码助手',);
               }
           ),
