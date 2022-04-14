@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:library_reservation/core/model/token_entity.dart';
+import 'package:library_reservation/core/model/update_back_entity.dart';
 import 'package:sm_crypto/sm_crypto.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -232,9 +233,8 @@ class _SettingHomePageState extends State<SettingHomePage> {
       // "deviceId":'12345',
       "terminalKey": resp.message
     };
-    Map<String, dynamic> backMap = {
-      "success": 'false',
-    };
+    UpdateBackEntity backEntity = UpdateBackEntity();
+    backEntity.success = 'false';
     Response res = await HttpUtil.instance.post(ApiConfig.activate, data: map);
     if (_controller != null && res.data['data'] != null) {
       ManagerUtils.instance.saveSeriesNumber(res.data['data']['terminalId']);
@@ -249,23 +249,21 @@ class _SettingHomePageState extends State<SettingHomePage> {
         String enResult = SM4Utils.getDecryptData(result.data['data'], key);
         Map<String, dynamic> mapResult = convert.jsonDecode(enResult);
         TokenEntity dataEntity = TokenEntity().fromJson(mapResult);
-        backMap['success'] = 'true';
-        backMap['token'] = dataEntity.accessToken!;
-        backMap['id'] = terminalId;
-        print('backMap ======== $backMap');
+        backEntity.success = 'true';
+        backEntity.token = dataEntity.accessToken!;
+        backEntity.terminalId = terminalId;
+        print('backMap ======== ${backEntity.toJson()}');
         _controller
-            .runJavascript('getBoundSerialResult("$backMap")')
+            .runJavascript('getBoundSerialResult($backEntity)')
             .then((result) {
-          _controller.reload();
           // You can handle JS result here.
         });
         return;
       }
     }
       _controller
-          .runJavascript('getBoundSerialResult("$backMap")')
+          .runJavascript('getBoundSerialResult($backEntity)')
           .then((result) {
-            _controller.reload();
         // You can handle JS result here.
       });
   }
