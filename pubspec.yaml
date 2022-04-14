@@ -46,7 +46,7 @@ dependencies:
   sm_crypto: 1.0.1
   wakelock: ^0.6.1
   permission_handler: 9.0.1
-
+  url_launcher: 6.0.20
   #flutter_hms_scan_kit: ^1.0.1
 
 dev_dependencies:
@@ -101,3 +101,4 @@ flutter:
     - assets/images/3.0x/
     - assets/images/main_scan_button.png
     - assets/voice/Category.json
+    - assets/html/
