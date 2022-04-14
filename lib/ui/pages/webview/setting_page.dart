@@ -91,6 +91,7 @@ class _SettingHomePageState extends State<SettingHomePage> {
           _serialJavascriptChannel(), //设置序列号
           _tokenJavascriptChannel(), //token过期
           _speedJavascriptChannel(), //设置速率
+          _speedGetJavascriptChannel(),
           _encryptJavascriptChannel(), //加密
           _boundSerialJavascriptChannel(), //绑定序列号
           _copyJavascriptChannel(), //复制内容到剪切板
@@ -162,11 +163,13 @@ class _SettingHomePageState extends State<SettingHomePage> {
 
   //js调用flutter-----通知前端修改扫描成功弹窗显示倒计时速度
   JavascriptChannel _speedJavascriptChannel() {
+
     return JavascriptChannel(name: 'setRate', onMessageReceived: setRate);
   }
 
   //设置及速率
   setRate(JavascriptMessage resp) {
+    print('前端==================');
     int rate = int.parse(resp.message);
     Fluttertoast.showToast(msg: '速率设置成功');
     ManagerUtils.instance.saveRate(rate);
