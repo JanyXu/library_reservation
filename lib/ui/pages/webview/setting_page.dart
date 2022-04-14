@@ -183,7 +183,7 @@ class _SettingHomePageState extends State<SettingHomePage> {
   //设置及速率
   getRate(JavascriptMessage resp) {
     _controller
-        .runJavascript('setRateResult("${ManagerUtils.instance.getRate()}")')
+        .runJavascript('setRateResult("${ManagerUtils.instance.getRate().toString()}")')
         .then((result) {
       // You can handle JS result here.
     });
