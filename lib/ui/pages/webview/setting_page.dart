@@ -239,6 +239,7 @@ class _SettingHomePageState extends State<SettingHomePage> {
       _controller
           .runJavascript('getBoundSerialResult("${res.data}")')
           .then((result) {
+            _controller.reload();
         // You can handle JS result here.
       });
     }
