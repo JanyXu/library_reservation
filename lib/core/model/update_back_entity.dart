@@ -1,1 +1,1 @@
-import 'package:library_reservation/generated/json/base/json_convert_content.dart';class UpdateBackEntity with JsonConvert<UpdateBackEntity> {	String? success;	String? token;	String? terminalId;}
+import 'package:library_reservation/generated/json/base/json_convert_content.dart';class UpdateBackEntity with JsonConvert<UpdateBackEntity> {	String? success;	String? token;	String? id;}

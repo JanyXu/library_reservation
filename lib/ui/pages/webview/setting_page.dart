@@ -239,35 +239,35 @@ class _SettingHomePageState extends State<SettingHomePage> {
     if (_controller != null && res.data['data'] != null) {
       ManagerUtils.instance.saveSeriesNumber(res.data['data']['terminalId']);
       ManagerUtils.instance.saveSeriesNumberKey(resp.message);
-      backEntity.success = 'true';
-      backEntity.token = res.data['data']['token'];
-      backEntity.terminalId = res.data['data']['terminalId'];
-      //getBoundSerialResult里面y要传字符串，不是对象，要用双引号包裹
-      _controller
-          .runJavascript('getBoundSerialResult("${convert.json.encode(backEntity.toJson())}")')
-          .then((result) {
-        // You can handle JS result here.
-      });
-      // final result = await HttpUtil.instance.get(ApiConfig.getToken);
-      // //Map<String, dynamic> resultData = result.data['data'][0];
-      // if (result.data['code'] == 200) {
-      //   String localKey =
-      //   ManagerUtils.instance.getSeriesNumberKey()!.substring(0, 16);
-      //   String key = SM4.createHexKey(key: localKey);
-      //   String enResult = SM4Utils.getDecryptData(result.data['data'], key);
-      //   Map<String, dynamic> mapResult = convert.jsonDecode(enResult);
-      //   TokenEntity dataEntity = TokenEntity().fromJson(mapResult);
-      //   backEntity.success = 'true';
-      //   backEntity.token = dataEntity.accessToken!;
-      //   backEntity.terminalId = terminalId;
-      //   print('backMap ======== ${backEntity.toJson()}');
-      //   _controller
-      //       .runJavascript('getBoundSerialResult($backEntity)')
-      //       .then((result) {
-      //     // You can handle JS result here.
-      //   });
-      //   return;
-      // }
+      // backEntity.success = 'true';
+      // backEntity.token = res.data['data']['token'];
+      // backEntity.terminalId = res.data['data']['terminalId'];
+      // //getBoundSerialResult里面y要传字符串，不是对象，要用双引号包裹
+      // _controller
+      //     .runJavascript('getBoundSerialResult("${convert.json.encode(backEntity.toJson())}")')
+      //     .then((result) {
+      //   // You can handle JS result here.
+      // });
+      final result = await HttpUtil.instance.get(ApiConfig.getToken);
+      //Map<String, dynamic> resultData = result.data['data'][0];
+      if (result.data['code'] == 200) {
+        String localKey =
+        ManagerUtils.instance.getSeriesNumberKey()!.substring(0, 16);
+        String key = SM4.createHexKey(key: localKey);
+        String enResult = SM4Utils.getDecryptData(result.data['data'], key);
+        Map<String, dynamic> mapResult = convert.jsonDecode(enResult);
+        TokenEntity dataEntity = TokenEntity().fromJson(mapResult);
+        backEntity.success = 'true';
+        backEntity.token = dataEntity.accessToken!;
+        backEntity.id = res.data['data']['terminalId'];
+        print('backMap ======== ${backEntity.toJson()}');
+        _controller
+            .runJavascript('getBoundSerialResult(${convert.json.encode(backEntity.toJson())})')
+            .then((result) {
+          // You can handle JS result here.
+        });
+        return;
+      }
     }
       _controller
           .runJavascript('getBoundSerialResult("${convert.json.encode(backEntity.toJson())}")')
