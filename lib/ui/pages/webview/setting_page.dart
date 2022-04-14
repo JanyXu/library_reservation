@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:library_reservation/core/model/token_entity.dart';
 import 'package:sm_crypto/sm_crypto.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../../core/service/config/api_config.dart';
 import '../../../core/service/network/network.dart';
@@ -85,6 +86,7 @@ class _SettingHomePageState extends State<SettingHomePage> {
         javascriptMode: JavascriptMode.unrestricted,
         //JS和Flutter通信的Channel
         javascriptChannels: <JavascriptChannel>[
+          _goBrowserJavascriptChannel(),
           _goBackJavascriptChannel(),
           _serialJavascriptChannel(), //设置序列号
           _tokenJavascriptChannel(), //token过期
@@ -100,7 +102,7 @@ class _SettingHomePageState extends State<SettingHomePage> {
         },
         //手势监听
         gestureNavigationEnabled: true,
-        initialUrl:  Utils.getSettingUrl()! + '?token=$token&id=$id',
+        initialUrl: url,
         //等待token请求完毕在链接后拼接最新token
         //加载进度
         onProgress: (int progress) {
@@ -112,6 +114,18 @@ class _SettingHomePageState extends State<SettingHomePage> {
       ),
     );
   }
+
+  //js调用flutter-----通知前端token过期，或者返回首页
+  JavascriptChannel _goBrowserJavascriptChannel() {
+    return JavascriptChannel(name: 'goBrowser', onMessageReceived: goBrowser);
+  }
+
+  goBrowser(JavascriptMessage resp) async{
+    //void _launchURL() async {
+      if (!await launch(resp.message)) throw 'Could not launch ${resp.message}';
+    //}
+  }
+
 
   //js调用flutter-----通知前端token过期，或者返回首页
   JavascriptChannel _goBackJavascriptChannel() {
@@ -148,15 +162,39 @@ class _SettingHomePageState extends State<SettingHomePage> {
 
   //js调用flutter-----通知前端修改扫描成功弹窗显示倒计时速度
   JavascriptChannel _speedJavascriptChannel() {
-    return JavascriptChannel(name: 'setSpeed', onMessageReceived: setSpeed);
+    return JavascriptChannel(name: 'setRate', onMessageReceived: setRate);
   }
 
   //设置及速率
-  setSpeed(JavascriptMessage resp) {
+  setRate(JavascriptMessage resp) {
     int rate = int.parse(resp.message);
     Fluttertoast.showToast(msg: '速率设置成功');
     ManagerUtils.instance.saveRate(rate);
   }
+
+  //js调用flutter-----通知前端修改扫描成功弹窗显示倒计时速度
+  JavascriptChannel _speedGetJavascriptChannel() {
+    return JavascriptChannel(name: 'getRate', onMessageReceived: getRate);
+  }
+
+  //设置及速率
+  getRate(JavascriptMessage resp) {
+    _controller
+        .runJavascript('setRateResult("${ManagerUtils.instance.getRate()}")')
+        .then((result) {
+      // You can handle JS result here.
+    });
+  }
+
+  // //js调用flutter
+  // JavascriptChannel _toasterJavascriptChannel(BuildContext context) {
+  //   return JavascriptChannel(
+  //       name: 'Print', //这个那么是和js端约定的一个协议名，可以自定义
+  //       onMessageReceived: (JavascriptMessage message) {
+  //         print(message.message);  //js返回数据
+  //         plugin.evalJavascript('想要发送的数据给后端');
+  //       });
+  // }
 
   //js调用flutter-----通知前端对参数进行加密操作
   JavascriptChannel _encryptJavascriptChannel() {
@@ -208,11 +246,11 @@ class _SettingHomePageState extends State<SettingHomePage> {
 
   //js调用flutter-----通知前端复制
   JavascriptChannel _copyJavascriptChannel() {
-    return JavascriptChannel(name: 'copyData', onMessageReceived: _copyData);
+    return JavascriptChannel(name: 'copyResult', onMessageReceived: _copyResult);
   }
 
 //复制内容
-  _copyData(JavascriptMessage resp) {
+  _copyResult(JavascriptMessage resp) {
     String data = resp.message;
     if (data != null && data != '') {
       Clipboard.setData(ClipboardData(text: data));
