@@ -33,6 +33,7 @@ class SCMyApp extends StatelessWidget {
               future: _getDicValue(),
               builder: (ctx , snapshot) {
                 if (!snapshot.hasData) return Scaffold(
+                  resizeToAvoidBottomInset: false,
                   appBar: AppBar(
                     title: Text("扫码助手"),
                   ),

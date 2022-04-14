@@ -47,6 +47,7 @@ dependencies:
   wakelock: ^0.6.1
   permission_handler: 9.0.1
   url_launcher: 6.0.20
+  amap_flutter_location: ^3.0.0
   #flutter_hms_scan_kit: ^1.0.1
 
 dev_dependencies:

@@ -1,9 +1,8 @@
-package com.example.library_reservation;
+package com.example.scanqrcode;
 
 import android.os.Build;
 import android.os.Bundle;
 
-import io.flutter.plugins.GeneratedPluginRegistrant;
 import io.flutter.embedding.android.FlutterActivity;
 import androidx.annotation.NonNull;
 public class WebTestActivity extends FlutterActivity {

@@ -50,7 +50,7 @@ class _SettingHomePageState extends State<SettingHomePage> {
       return '';
     }
     String localKey =
-        ManagerUtils.instance.getSeriesNumberKey()!.substring(0, 16);
+    ManagerUtils.instance.getSeriesNumberKey()!.substring(0, 16);
     String key = SM4.createHexKey(key: localKey);
     String enResult = SM4Utils.getDecryptData(result.data['data'], key);
     print(enResult);
@@ -124,7 +124,7 @@ class _SettingHomePageState extends State<SettingHomePage> {
 
   goBrowser(JavascriptMessage resp) async{
     //void _launchURL() async {
-      if (!await launch(resp.message)) throw 'Could not launch ${resp.message}';
+    if (!await launch(resp.message)) throw 'Could not launch ${resp.message}';
     //}
   }
 
@@ -269,11 +269,11 @@ class _SettingHomePageState extends State<SettingHomePage> {
         return;
       }
     }
-      _controller
-          .runJavascript('getBoundSerialResult("${convert.json.encode(backEntity.toJson())}")')
-          .then((result) {
-        // You can handle JS result here.
-      });
+    _controller
+        .runJavascript('getBoundSerialResult("${convert.json.encode(backEntity.toJson())}")')
+        .then((result) {
+      // You can handle JS result here.
+    });
   }
 
   //js调用flutter-----通知前端复制
