@@ -45,6 +45,7 @@ dependencies:
   audioplayers: 0.20.1
   sm_crypto: 1.0.1
   wakelock: ^0.6.1
+  permission_handler: 9.0.1
 
   #flutter_hms_scan_kit: ^1.0.1
 
