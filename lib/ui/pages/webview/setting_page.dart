@@ -254,6 +254,7 @@ class _SettingHomePageState extends State<SettingHomePage> {
     String data = resp.message;
     if (data != null && data != '') {
       Clipboard.setData(ClipboardData(text: data));
+      Fluttertoast.showToast(msg: '复制成功');
     }
   }
 
