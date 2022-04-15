@@ -42,7 +42,8 @@ dependencies:
   device_info: 2.0.3
   code_scanner: 1.0.0
   path_provider: ^2.0.6
-  webview_flutter: ^2.0.13
+#  webview_flutter: ^2.0.13
+  webview_flutter: ^3.0.2
   audioplayers: 0.20.1
   sm_crypto: 1.0.1
   wakelock: ^0.6.1
