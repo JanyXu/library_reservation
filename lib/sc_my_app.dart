@@ -39,7 +39,8 @@ class SCMyApp extends StatelessWidget {
                   ),
                   body: Container(),
                 );
-                return OrientationBuilder(
+                return
+                  OrientationBuilder(
                     builder: (BuildContext context, Orientation orientation) {
                       return orientation == Orientation.portrait ? HomePage() : Container(child: Image.asset('assets/images/main_ground.png'));
                     }

@@ -120,11 +120,13 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
           //   title: Text('扫一扫'),
           //   leading:
           // ),
-          body: WillPopScope(
+          body:
+          WillPopScope(
             onWillPop: () async{
               return false;
             },
-            child: Stack(
+            child:
+            Stack(
             //  alignment: AlignmentDirectional.center,
               children: [
                 CodeScanner(
@@ -272,8 +274,8 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
                   },
                 ),
               ],
-            ),
-          )),
+            ),)
+          )
     );
   }
 
