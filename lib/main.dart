@@ -5,6 +5,7 @@ import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:library_reservation/core/service/utils/common.dart';
 import 'package:library_reservation/core/service/utils/manager_utils.dart';
 import 'package:library_reservation/setting/theme.dart';
@@ -82,24 +83,37 @@ class MyApp extends StatelessWidget {
     // }
 
     //_getTest().then((value) => {});
-    return MaterialApp(
-      theme: ScanTheme.lightTheme,
-      darkTheme: ScanTheme.darkTheme,
-      title: '扫码助手',
-      color: Colors.transparent,
-      initialRoute: XBRouter.initialRoute,
-      routes: XBRouter.routes,
-        onGenerateRoute: XBRouter.generateRoute,
 
-      // home: FutureBuilder<Map<String, dynamic>?>(
-      //   future: initPlatformState(),
-      //   builder: (ctx , snapshot) {
-      //     if (!snapshot.hasData) return SizedBox(height: 0);
-      //     print('device-=-=-=-=-=-=--=-=-=-${ManagerUtils.instance.deviceId}');
-      //     return HomePage();
-      //     // return MyHomePage(title: '扫码助手',);
-      //   }
-      // )
+        return MaterialApp(
+          theme: ScanTheme.lightTheme,
+          darkTheme: ScanTheme.darkTheme,
+          title: '扫码助手',
+          color: Colors.transparent,
+          initialRoute: XBRouter.initialRoute,
+          routes: XBRouter.routes,
+          locale: Locale('zh', 'CH'),
+          localizationsDelegates: [
+            GlobalCupertinoLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: [
+            const Locale('zh', 'CH'),
+            const Locale('en', 'US'),
+          ],
+          onGenerateRoute: XBRouter.generateRoute,
+
+          // home: FutureBuilder<Map<String, dynamic>?>(
+          //   future: initPlatformState(),
+          //   builder: (ctx , snapshot) {
+          //     if (!snapshot.hasData) return SizedBox(height: 0);
+          //     print('device-=-=-=-=-=-=--=-=-=-${ManagerUtils.instance.deviceId}');
+          //     return HomePage();
+          //     // return MyHomePage(title: '扫码助手',);
+          //   }
+          // )
+
+
     );
     return FutureBuilder<Map<String, dynamic>?>(
       future: initPlatformState(),
