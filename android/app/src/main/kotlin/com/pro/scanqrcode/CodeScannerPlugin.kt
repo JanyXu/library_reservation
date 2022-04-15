@@ -15,7 +15,7 @@ class CodeScannerPlugin : FlutterPlugin, ActivityAware, PluginRegistry.ActivityR
 
     override fun onAttachedToEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         val factory = CodeScannerFactory(binding.binaryMessenger)
-        CodeScannerObject.channel = MethodChannel(binding.binaryMessenger, "code_scanner")
+        CodeScannerObject.channel = MethodChannel(binding.binaryMessenger, "code_scanner1")
         binding.platformViewRegistry.registerViewFactory("code_scanner_view", factory)
     }
 
