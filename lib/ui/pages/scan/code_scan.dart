@@ -177,6 +177,10 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
                             _getScanValue().then((value) {
                               ScanResultEntity? scanResult= value;
                               if(scanResult!=null && scanResult.userName!=null) {
+                                if (scanResult.phone == '400'){
+                                  Fluttertoast.showToast(msg: scanResult.userName!);
+                                  return;
+                                }
                                 play(remindVoice);
                                 audioFlag = true;
                                 _openAlertDialog(context, value!);
@@ -307,6 +311,7 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
         resultEntity.userName = result.data['msg'];
         resultEntity.certNo = ebcEncryptData;
         resultEntity.resultDicCode = 'other';
+        resultEntity.phone = result.data['code'].toString();
         //print('num======' + result.data['msg']+"------" + SM4Utils.getDecryptData(ebcEncryptData, key));
         resultVoice = Utils.getTotalResultVoice(resultEntity.resultDicCode)!;
         return resultEntity;

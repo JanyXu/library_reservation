@@ -5,6 +5,9 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -29,14 +32,8 @@ void main() {
   //   expect(find.text('0'), findsNothing);
   //   expect(find.text('1'), findsOneWidget);
   // });
-  String key = SM4.createHexKey(key: 'DE9CF236992B4D77');
-  String ebctData = 'faAgwpJU8NOAirOEW0dT4Xlk3yFHW5KhKvIShG2cbbmxBz6lgaMAiEUXdbPupgNQqicsagUVW6kADw78+PUqSsjK4n8X3YQ/Uxi+UDWJijs=';
-  String ebcDecryptData = SM4.decrypt(
-      data: ebctData,
-      key: key,
-      padding: SM4PaddingMode.PKCS5,
-      mode: SM4CryptoMode.ECB,
-      iv: key
-  );
-  print('🔑 EBC DecryptData:\n $ebcDecryptData');
+  String key = SM4.createHexKey(key: '32F889ED8ED34836');
+  String ebctData = 'F59jkjaugKta8fWUdeOtn/EzCcBUvUIfHMyHpsgGIXoM+6fTJLmZPtY/LZ5ny8nUjq8BhR1FnGap5hlfPB9hRzfelM0=';
+  Uint8List base64Decrypt = base64.decode(ebctData);
+  print('${SM4.decryptOutFromArray(data: base64Decrypt, key: key)}');
 }

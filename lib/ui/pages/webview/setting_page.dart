@@ -46,7 +46,8 @@ class _SettingHomePageState extends State<SettingHomePage> {
     final result = await HttpUtil.instance.get(ApiConfig.getToken);
     //Map<String, dynamic> resultData = result.data['data'][0];
     if (result.data['code'] != 200) {
-      Fluttertoast.showToast(msg: '终端无效');
+      // Fluttertoast.showToast(msg: '终端无效');
+      url = Utils.getSettingUrl()!;
       return '';
     }
     String localKey =
@@ -236,6 +237,17 @@ class _SettingHomePageState extends State<SettingHomePage> {
     UpdateBackEntity backEntity = UpdateBackEntity();
     backEntity.success = 'false';
     Response res = await HttpUtil.instance.post(ApiConfig.activate, data: map);
+    if (res.data['code'].toString() == '400'){
+      backEntity.token = '';
+      backEntity.id = '';
+      Fluttertoast.showToast(msg: res.data['msg']);
+      _controller
+          .runJavascript('getBoundSerialResult("${convert.json.encode(backEntity.toJson())}")')
+          .then((result) {
+        // You can handle JS result here.
+      });
+      return;
+    }
     if (_controller != null && res.data['data'] != null) {
       ManagerUtils.instance.saveSeriesNumber(res.data['data']['terminalId']);
       ManagerUtils.instance.saveSeriesNumberKey(resp.message);
@@ -251,6 +263,17 @@ class _SettingHomePageState extends State<SettingHomePage> {
       // });
       final result = await HttpUtil.instance.get(ApiConfig.getToken);
       //Map<String, dynamic> resultData = result.data['data'][0];
+      if (res.data['code'].toString() == '400'){
+        backEntity.token = '';
+        backEntity.id = '';
+        Fluttertoast.showToast(msg: res.data['msg']);
+        _controller
+            .runJavascript('getBoundSerialResult("${convert.json.encode(backEntity.toJson())}")')
+            .then((result) {
+          // You can handle JS result here.
+        });
+        return;
+      }
       if (result.data['code'] == 200) {
         String localKey =
         ManagerUtils.instance.getSeriesNumberKey()!.substring(0, 16);
