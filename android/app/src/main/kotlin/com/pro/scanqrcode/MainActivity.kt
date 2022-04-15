@@ -6,5 +6,9 @@ class MainActivity: FlutterActivity() {
 //    override fun provideSplashScreen(): SplashScreen? {
 //        return LottieSplashScreen()
 //    }
-
+//    @Override
+//    public void configureFlutterEngine(FlutterEngine flutterEngine){
+//        super.configureFlutterEngine(flutterEngine)
+//        CodeScannerView(flutterEngine.dartExecutor.binaryMessenger)
+//    }
 }
