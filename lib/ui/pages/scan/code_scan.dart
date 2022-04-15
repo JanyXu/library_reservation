@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:code_scanner/code_scanner.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +15,8 @@ import '../../../core/service/network/network.dart';
 import '../../widgets/dialog.dart';
 import 'package:wakelock/wakelock.dart';
 import 'dart:convert' as convert;
+
+import 'code_scanner.dart';
 void main() {
   runApp(MaterialApp(home: CodeScannerHome()));
 }
@@ -180,6 +181,8 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
                                 audioFlag = true;
                                 _openAlertDialog(context, value!);
                               } else {
+                                // controller.prepareSetMethodHandler();
+                                // controller.startScan();
                                 dialogFlag = false;
                                 Fluttertoast.showToast(msg: '网络错误');
                               }
@@ -309,14 +312,20 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
         return resultEntity;
       }
       if(result.data['data'] == null) {
-
+        ScanResultEntity resultEntity = ScanResultEntity();
+        resultEntity.userName = result.data['msg'];
+        resultEntity.certNo = ebcEncryptData;
+        resultEntity.resultDicCode = 'other';
+        //print('num======' + result.data['msg']+"------" + SM4Utils.getDecryptData(ebcEncryptData, key));
+        resultVoice = Utils.getTotalResultVoice(resultEntity.resultDicCode)!;
+        return resultEntity;
       }
       String enResult = SM4Utils.getDecryptData(result.data['data'], key);
 
       Map<String, dynamic> user = convert.jsonDecode(enResult);
       final data = ScanResultEntity().fromJson(user);
       resultVoice = Utils.getTotalResultVoice(data.resultDicCode)!;
-      //print('enResult=========${data.resultDicCode}');
+      print('enResult=========${enResult}');
       // //String str = json.encode(result.data);
       // //DicDataEntity dataEntity = DicDataEntity().fromJson(result.data['data'][0]);
       // print('解密信息========${SM4Utils.getDecryptData(result.data['data'], key)}');
@@ -352,6 +361,8 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
     // TODO: implement onCancel
     print('hjjjkk');
     dialogFlag = false;
+    // controller.prepareSetMethodHandler();
+    // controller.startScan();
     // setState(() {
     //
     // });

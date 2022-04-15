@@ -239,6 +239,7 @@ class _SettingHomePageState extends State<SettingHomePage> {
     if (_controller != null && res.data['data'] != null) {
       ManagerUtils.instance.saveSeriesNumber(res.data['data']['terminalId']);
       ManagerUtils.instance.saveSeriesNumberKey(resp.message);
+      print('terminalid===============' +ManagerUtils.instance.getSeriesNumber()!);
       // backEntity.success = 'true';
       // backEntity.token = res.data['data']['token'];
       // backEntity.terminalId = res.data['data']['terminalId'];
