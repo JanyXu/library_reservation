@@ -8,7 +8,8 @@ class SM4Utils{
      String key = SM4.createHexKey(key: keyPara);
     // List<int> encryptOutArray = SM4.encryptOutArray(data: dataParam, key: key);
     String ebcEncryptData = SM4.encrypt(data: dataParam, key: key);
-    List<int> encryptOutArray = SM4.encryptOutArray(data: dataParam, key: key);
+    List<int> encryptOutArray = SM4.encryptOutArray(data: dataParam, key: key,padding: SM4PaddingMode.PKCS5);
+    print('byte字节数组======${encryptOutArray}');
     String base64Encry = base64Encode(encryptOutArray);
     print('byte数组======${base64Encry}');
     return base64Encode(encryptOutArray);
@@ -16,7 +17,7 @@ class SM4Utils{
 
   static String getDecryptData(String ebcEncryptData,String key) {
     Uint8List base64Decrypt = base64.decode(ebcEncryptData);
-    return SM4.decryptOutFromArray(data: base64Decrypt, key: key);
+    return SM4.decryptOutFromArray(data: base64Decrypt, key: key,padding: SM4PaddingMode.PKCS5);
   }
   void sm4Example() {
     String key = SM4.createHexKey(key: '约定的key');

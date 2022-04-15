@@ -9,16 +9,20 @@ class SensitiveInfoUtils {
     if (fullName.isEmpty) {
       return "";
     }
-    String sb = fullName.substring(0, 1);
-    for (int i = 0; i < fullName.length - 2; i++) {
-//sb.append("*");
-      sb += '*';
+    String sb = fullName.substring(fullName.length - 1, fullName.length);
+    if (fullName.length >= 3){
+      return '**$sb';
     }
-    if (fullName.length > 2) {
-      sb += fullName.substring(fullName.length - 1);
-    } else {
-      sb += "*";
-    }
+    return '*$sb';
+//     for (int i = 0; i < fullName.length - 2; i++) {
+// //sb.append("*");
+//       sb = '*$sb';
+//     }
+//     if (fullName.length > 2) {
+//       sb += fullName.substring(fullName.length - 1);
+//     } else {
+//       sb += "*";
+//     }
     return sb.toString();
   }
 
