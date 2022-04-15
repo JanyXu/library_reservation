@@ -64,6 +64,11 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  plugin:
+   platforms:
+      android:
+       package: com.pro.scanqrcode
+       pluginClass: CodeScannerPlugin
 
   # To add assets to your application, add an assets section, like this:
   # assets:
