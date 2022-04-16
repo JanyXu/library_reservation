@@ -60,11 +60,22 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            minifyEnabled true
+            minifyEnabled false
             useProguard true
-
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            useProguard true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -77,6 +88,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.zxing:core:3.3.0'
     implementation 'com.amap.api:location:latest.integration'
+    api "org.bouncycastle:bcprov-jdk15on:1.69"
     //implementation 'com.huawei.hms:scan:1.3.2.300'
 
 }

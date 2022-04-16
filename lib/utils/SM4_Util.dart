@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/services.dart';
 import 'package:sm_crypto/sm_crypto.dart';
 
 class SM4Utils{
@@ -13,6 +14,31 @@ class SM4Utils{
     String base64Encry = base64Encode(encryptOutArray);
     print('byte数组======${base64Encry}');
     return base64Encode(encryptOutArray);
+  }
+
+  static Future<String?> getEncryptDataFromPlatform(String dataParam,String keyPara) async {
+    print('byte数组======${keyPara}');
+    String key = SM4.createHexKey(key: keyPara);
+    print('byte数组======${key}');
+    // 创建渠道
+    const channel = const MethodChannel("encrypt");
+
+   // String callNativeMethod(String msg) {
+      try {
+        // 通过渠道，调用原生代码代码的方法
+        String result = await channel.invokeMethod("encrypt", {"data": dataParam,'key':key} );
+        if(result == null) {
+          return "null result";
+        }
+        return result;
+
+        // 打印执行的结果
+        //return(future.toString());
+      } on PlatformException catch(e) {
+        print(e.toString());
+        return 'null';
+      }
+    //}
   }
 
   static String getDecryptData(String ebcEncryptData,String key) {

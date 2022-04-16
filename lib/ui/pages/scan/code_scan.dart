@@ -178,6 +178,7 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
                               ScanResultEntity? scanResult= value;
                               if(scanResult!=null && scanResult.userName!=null) {
                                 if (scanResult.phone == '400'){
+                                  dialogFlag = false;
                                   Fluttertoast.showToast(msg: scanResult.userName!);
                                   return;
                                 }
@@ -289,14 +290,19 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
   Future<ScanResultEntity?> _getScanValue() async {
     // en = '6000001010644929.YKM11649330125V01.02.1156D755EB429E2AB7777CD43A01C2D4';
     if (!en.isEmpty) {
-      print('源码======' + en);
+      print('原生加密测试======' + en);
       String localKey = ManagerUtils.instance.getSeriesNumberKey()!.substring(0,16);
-      print('num======' + localKey);
+      print('原生加密测试======' + localKey);
       String key = SM4.createHexKey(key: localKey);
       print('👇 ECB Encrypt Mode:');
+      String? resultEN = await SM4Utils.getEncryptDataFromPlatform(en,
+          localKey);
+      print('原生加密测试结果：=======' +resultEN!);
+
       String ebcEncryptData = SM4Utils.getEncryptptData(en, localKey);
       print('🔒 EBC EncryptptData:\n $ebcEncryptData');
-      Map<String, dynamic> map = {"code": ebcEncryptData};
+      Map<String, dynamic> map = {"code": resultEN};
+      print('原生加密测试结果：=======${map}');
       final result = await HttpUtil.instance.post(ApiConfig.scan, data: map);
 
       if(result.statusCode !=200) {
@@ -307,13 +313,15 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
       }
 
       if (result.data['code'].toString() == '400' ||result.data['code'].toString() == '10001' || result.data['code'].toString() == '10009'){
+
         ScanResultEntity resultEntity = ScanResultEntity();
         resultEntity.userName = result.data['msg'];
-        resultEntity.certNo = ebcEncryptData;
+        resultEntity.certNo = en;
         resultEntity.resultDicCode = 'other';
         resultEntity.phone = result.data['code'].toString();
         //print('num======' + result.data['msg']+"------" + SM4Utils.getDecryptData(ebcEncryptData, key));
         resultVoice = Utils.getTotalResultVoice(resultEntity.resultDicCode)!;
+        Fluttertoast.showToast(msg: resultEntity.userName!);
         return resultEntity;
       }
       if(result.data['data'] == null) {
