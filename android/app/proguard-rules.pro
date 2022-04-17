@@ -16,7 +16,11 @@
 -keepattributes InnerClasses
 -keepattributes Signature
 -keepattributes SourceFile,LineNumberTable
--keep class com.pro.scanqrcode.**
+-keep class com.journeyapps.**{*;}
+-keep class org.bouncycastle.**{*;}
+-keep class io.flutter.**{*;}
+-keep class javax.crypto.Cipher.**{*;}
+-keep class com.pro.scanqrcode.**{*;}
 -keep class com.huawei.hianalytics.**{*;}
 -keep class com.huawei.updatesdk.**{*;}
 -keep class com.huawei.hms.**{*;}

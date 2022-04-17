@@ -41,7 +41,7 @@ dependencies:
   #获取设备id
   device_info: 2.0.3
   path_provider: ^2.0.6
-#  webview_flutter: ^2.0.13
+  #  webview_flutter: ^2.0.13
   webview_flutter: ^3.0.2
   audioplayers: 0.20.1
   sm_crypto: 1.0.1
@@ -50,7 +50,7 @@ dependencies:
   url_launcher: 6.0.20
   amap_flutter_location: ^3.0.0
   flutter_cupertino_localizations: ^1.0.1
-
+  perfect_volume_control: ^1.0.5
 
   #flutter_hms_scan_kit: ^1.0.1
 
@@ -70,7 +70,7 @@ flutter:
   uses-material-design: true
     # plugin:
     #   platforms:
-    #    android:
+  #    android:
   #     package: com.pro.scanqrcode
   #      pluginClass: CodeScannerPlugin
 

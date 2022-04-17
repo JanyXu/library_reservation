@@ -4,11 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+import 'code_scanner.dart';
 import 'component.dart';
 import 'exception.dart';
 
-class CodeScanner extends StatefulWidget {
-  const CodeScanner({
+class CodeScannerBack extends StatefulWidget {
+  const CodeScannerBack({
     required this.controller,
     this.isScanFrame = false,
     this.scanFrameSize,
@@ -17,7 +18,7 @@ class CodeScanner extends StatefulWidget {
   });
 
   /// CodeScanner needs [CodeScannerController] instance.
-  final CodeScannerController controller;
+  final CodeScannerControllerBack controller;
 
   /// scan frame
   final bool isScanFrame;
@@ -35,7 +36,7 @@ class CodeScanner extends StatefulWidget {
   State<StatefulWidget> createState() => _CodeScannerState();
 }
 
-class _CodeScannerState extends State<CodeScanner> {
+class _CodeScannerState extends State<CodeScannerBack> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width * 0.75;
@@ -45,17 +46,17 @@ class _CodeScannerState extends State<CodeScanner> {
         return Stack(
           children: [
             AndroidView(
-              viewType: 'code_scanner_view_front',
+              viewType: 'code_scanner_view_back',
               onPlatformViewCreated: _onPlatformViewCreated,
               creationParams: {},
               creationParamsCodec: const StandardMessageCodec(),
             ),
             widget.isScanFrame
                 ? Components.defaultScanBorder(
-                    widget.scanFrameSize ?? defaultSize,
-                    widget.frameColor,
-                    widget.frameWidth,
-                  )
+              widget.scanFrameSize ?? defaultSize,
+              widget.frameColor,
+              widget.frameWidth,
+            )
                 : Container(),
           ],
         );
@@ -63,17 +64,17 @@ class _CodeScannerState extends State<CodeScanner> {
         return Stack(
           children: [
             UiKitView(
-              viewType: 'code_scanner_view',
+              viewType: 'code_scanner_view_back',
               onPlatformViewCreated: _onPlatformViewCreated,
               creationParams: {},
               creationParamsCodec: const StandardMessageCodec(),
             ),
             widget.isScanFrame
                 ? Components.defaultScanBorder(
-                    widget.scanFrameSize ?? defaultSize,
-                    widget.frameColor,
-                    widget.frameWidth,
-                  )
+              widget.scanFrameSize ?? defaultSize,
+              widget.frameColor,
+              widget.frameWidth,
+            )
                 : Container(),
           ],
         );
@@ -83,7 +84,7 @@ class _CodeScannerState extends State<CodeScanner> {
   }
 
   void _onPlatformViewCreated(int id) {
-    widget.controller.channel = const MethodChannel('code_scanner_front');
+    widget.controller.channel = const MethodChannel('code_scanner_back');
     widget.controller
       ..prepareSetMethodHandler()
       ..startScan();
@@ -92,14 +93,14 @@ class _CodeScannerState extends State<CodeScanner> {
 
 /// Controller of [CodeScanner].
 /// manage screen([CodeScanner]) state by calling method from instance of [CodeScannerController].
-class CodeScannerController {
+class CodeScannerControllerBack {
   MethodChannel? channel;
 
-  CodeScannerController();
+  CodeScannerControllerBack();
 
   void prepareSetMethodHandler() {
     this.channel?.setMethodCallHandler(
-      (call) async {
+          (call) async {
         switch (call.method) {
           case 'receiveScanData':
             final receivedData = call.arguments;
@@ -133,13 +134,13 @@ class CodeScannerController {
   }
 
   StreamController<String> _scanDataStreamController =
-      StreamController<String>.broadcast();
+  StreamController<String>.broadcast();
 
   StreamController<bool> _isSuccessReadDataStreamController =
-      StreamController<bool>.broadcast();
+  StreamController<bool>.broadcast();
 
   StreamController<String> _readDataStreamController =
-      StreamController<String>.broadcast();
+  StreamController<String>.broadcast();
 
   /// Listen for [scanDataStream] to get scan data.
   Stream<String> get scanDataStream => _scanDataStreamController.stream;

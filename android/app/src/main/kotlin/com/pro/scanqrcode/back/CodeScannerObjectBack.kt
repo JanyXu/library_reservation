@@ -1,11 +1,11 @@
-package com.pro.scanqrcode;
+package com.pro.scanqrcode.back;
 import android.app.Activity
 import io.flutter.plugin.common.MethodChannel
 
-object CodeScannerObject {
+object CodeScannerObjectBack {
     var channel: MethodChannel? = null
     var activity: Activity? = null
     const val CAMERA_REQUEST_CODE = 200
     var readSuccess: Boolean = false
-    var reader: CodeReader = CodeReader()
+    var reader: CodeReaderBack = CodeReaderBack()
 }

@@ -1,4 +1,4 @@
-package com.pro.scanqrcode;
+package com.pro.scanqrcode.back;
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -10,24 +10,24 @@ import com.google.zxing.MultiFormatReader
 import com.google.zxing.RGBLuminanceSource
 import com.google.zxing.common.HybridBinarizer
 
-class CodeReader {
+class CodeReaderBack {
 
     fun getImage() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = "image/*"
 
-        CodeScannerObject.activity?.startActivityForResult(intent, CodeScannerObject.CAMERA_REQUEST_CODE)
+        CodeScannerObjectBack.activity?.startActivityForResult(intent, CodeScannerObjectBack.CAMERA_REQUEST_CODE)
     }
 
     fun getBitmapFromUri(uri: Uri?): Bitmap? {
         var bitmap: Bitmap? = null
 
-        if (uri != null && CodeScannerObject.activity != null) {
+        if (uri != null && CodeScannerObjectBack.activity != null) {
             bitmap = if (Build.VERSION.SDK_INT < 28) {
-                MediaStore.Images.Media.getBitmap(CodeScannerObject.activity!!.contentResolver, uri)
+                MediaStore.Images.Media.getBitmap(CodeScannerObjectBack.activity!!.contentResolver, uri)
             } else {
-                val source = ImageDecoder.createSource(CodeScannerObject.activity!!.contentResolver, uri)
+                val source = ImageDecoder.createSource(CodeScannerObjectBack.activity!!.contentResolver, uri)
                 ImageDecoder.decodeBitmap(source)
             }
         }
@@ -48,6 +48,6 @@ class CodeReader {
         if (bitmap != null) {
             readData = readCodeFromBitmap(bitmap)
         }
-        CodeScannerObject.channel?.invokeMethod("receiveReadData", listOf(readData != null, readData))
+        CodeScannerObjectBack.channel?.invokeMethod("receiveReadData", listOf(readData != null, readData))
     }
 }

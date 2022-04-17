@@ -1,4 +1,4 @@
-package com.pro.scanqrcode;
+package com.pro.scanqrcode.back;
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import androidx.annotation.NonNull
@@ -10,46 +10,46 @@ import io.flutter.plugin.common.PluginRegistry
 
 
 /** CodeScannerPlugin */
-class CodeScannerPlugin : FlutterPlugin, ActivityAware, PluginRegistry.ActivityResultListener {
+class CodeScannerPluginBack : FlutterPlugin, ActivityAware, PluginRegistry.ActivityResultListener {
 
 
     override fun onAttachedToEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-        val factory = CodeScannerFactory(binding.binaryMessenger)
-        CodeScannerObject.channel = MethodChannel(binding.binaryMessenger, "code_scanner")
-        binding.platformViewRegistry.registerViewFactory("code_scanner_view", factory)
+        val factory = CodeScannerFactoryBack(binding.binaryMessenger)
+        CodeScannerObjectBack.channel = MethodChannel(binding.binaryMessenger, "code_scanner_back")
+        binding.platformViewRegistry.registerViewFactory("code_scanner_view_back", factory)
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-        CodeScannerObject.activity = binding.activity
+        CodeScannerObjectBack.activity = binding.activity
         binding.addActivityResultListener(this)
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
-        CodeScannerObject.activity = null
+        CodeScannerObjectBack.activity = null
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-        CodeScannerObject.activity = binding.activity
+        CodeScannerObjectBack.activity = binding.activity
         binding.addActivityResultListener(this)
     }
 
     override fun onDetachedFromActivity() {
-        CodeScannerObject.activity = null
+        CodeScannerObjectBack.activity = null
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
         // CodeReader process: pick up from gallery
-        if (resultCode == RESULT_OK && requestCode == CodeScannerObject.CAMERA_REQUEST_CODE) {
+        if (resultCode == RESULT_OK && requestCode == CodeScannerObjectBack.CAMERA_REQUEST_CODE) {
             try {
                 val uri = data?.data
-                val bitmap = CodeScannerObject.reader.getBitmapFromUri(uri)
-                CodeScannerObject.reader.sendReadResult(bitmap)
+                val bitmap = CodeScannerObjectBack.reader.getBitmapFromUri(uri)
+                CodeScannerObjectBack.reader.sendReadResult(bitmap)
                 return true
             } catch (e: Exception) {
-                CodeScannerObject.reader.sendReadResult(null)
+                CodeScannerObjectBack.reader.sendReadResult(null)
                 return false
             }
         }

@@ -97,6 +97,8 @@ class _SettingHomePageState extends State<SettingHomePage> {
           _encryptJavascriptChannel(), //加密
           _boundSerialJavascriptChannel(), //绑定序列号
           _copyJavascriptChannel(), //复制内容到剪切板
+          _setCameraDirectionJavascriptChannel(),//调整camera的方向
+          _getCameraDirectionJavascriptChannel(),
         ].toSet(),
         //路由委托（可以通过在此处拦截url实现JS调用Flutter部分）
         navigationDelegate: (NavigationRequest request) {
@@ -299,6 +301,32 @@ class _SettingHomePageState extends State<SettingHomePage> {
       // You can handle JS result here.
     });
   }
+
+  //js调用flutter-----设置扫一扫方向
+  JavascriptChannel _setCameraDirectionJavascriptChannel() {
+    return JavascriptChannel(name: 'setCameraDirection', onMessageReceived: _cameraDirection);
+  }
+
+//js调用flutter-----设置扫一扫方向
+  _cameraDirection(JavascriptMessage resp) {
+    bool direction = resp.message.toString() == 'true';
+    ManagerUtils.instance.saveCameraDirection(direction);
+  }
+
+  //获取扫一扫相机方向
+  JavascriptChannel _getCameraDirectionJavascriptChannel() {
+    return JavascriptChannel(name: 'getCameraDirection', onMessageReceived: getCameraDirection);
+  }
+
+  //获取扫一扫相机方向
+  getCameraDirection(JavascriptMessage resp) {
+    _controller
+        .runJavascript('setCameraDirection("${ManagerUtils.instance.getCameraDirection().toString()}")')
+        .then((result) {
+      // You can handle JS result here.
+    });
+  }
+
 
   //js调用flutter-----通知前端复制
   JavascriptChannel _copyJavascriptChannel() {

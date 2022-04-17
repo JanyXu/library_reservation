@@ -6,6 +6,9 @@ import com.pro.scanqrcode.SM4Util;
 import io.flutter.plugin.common.MethodChannel
 import java.nio.charset.StandardCharsets
 import  kotlin.String;
+import com.pro.scanqrcode.front.CodeScannerPluginFront;
+import com.pro.scanqrcode.back.CodeScannerPluginBack;
+
 
 class MainActivity : FlutterActivity() {
     //    override fun provideSplashScreen(): SplashScreen? {
@@ -18,8 +21,9 @@ class MainActivity : FlutterActivity() {
 //    }
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        flutterEngine.plugins.add(CodeScannerPlugin())
 
+        flutterEngine.plugins.add(CodeScannerPluginBack())
+        flutterEngine.plugins.add(CodeScannerPluginFront())
 
         val messenger = flutterEngine.dartExecutor.binaryMessenger
 
