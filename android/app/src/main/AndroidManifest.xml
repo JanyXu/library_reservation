@@ -52,6 +52,7 @@
         android:label="扫码助手"
         android:icon="@mipmap/ic_launcher"
         tools:node="replace"
+        android:networkSecurityConfig="@xml/network_security_config"
         >
         <service android:name="com.amap.api.location.APSService"/>
         <activity
