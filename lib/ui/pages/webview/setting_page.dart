@@ -311,6 +311,11 @@ class _SettingHomePageState extends State<SettingHomePage> {
   _cameraDirection(JavascriptMessage resp) {
     bool direction = resp.message.toString() == 'true';
     ManagerUtils.instance.saveCameraDirection(direction);
+    _controller
+        .runJavascript('setCameraDirectionResult("true")')
+        .then((result) {
+      // You can handle JS result here.
+    });
   }
 
   //获取扫一扫相机方向
@@ -321,7 +326,7 @@ class _SettingHomePageState extends State<SettingHomePage> {
   //获取扫一扫相机方向
   getCameraDirection(JavascriptMessage resp) {
     _controller
-        .runJavascript('setCameraDirection("${ManagerUtils.instance.getCameraDirection().toString()}")')
+        .runJavascript('getCameraDirectionResult("${ManagerUtils.instance.getCameraDirection().toString()}")')
         .then((result) {
       // You can handle JS result here.
     });
