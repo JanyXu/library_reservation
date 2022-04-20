@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:library_reservation/core/model/update_entity.dart';
 import 'package:library_reservation/core/service/utils/manager_utils.dart';
 import 'package:library_reservation/ui/pages/scan/code_scan_back.dart';
 import 'package:library_reservation/ui/pages/scan/scan_frame.dart';
@@ -21,7 +22,7 @@ import '../../../core/service/network/network.dart';
 import '../../widgets/dialog.dart';
 import 'package:wakelock/wakelock.dart';
 import 'dart:convert' as convert;
-
+import 'package:url_launcher/url_launcher.dart';
 import 'code_scanner.dart';
 
 void main() {
@@ -396,6 +397,17 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
         return ScanResultEntity();
       }
 
+      if (result.data['code'].toString() == '10016'){
+        Map<String, dynamic> msg = convert.jsonDecode(result.data['msg']);
+        UpdateEntity dataEntity = UpdateEntity().fromJson(msg);
+        showDeleteConfirmDialog1(
+          context,
+          dataEntity.downloadUrl!,
+          dataEntity.version!.desc!,
+          // '立即更新'
+        );
+        return ScanResultEntity();
+      }
       if (result.data['code'].toString() == '400' ||
           result.data['code'].toString() == '10001' ||
           result.data['code'].toString() == '10009') {
@@ -432,6 +444,30 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
     }
 
     return ScanResultEntity();
+  }
+
+  // 弹出对话框
+  Future<bool?> showDeleteConfirmDialog1(BuildContext context,String url,String desc) {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("提示"),
+          content: Text(desc),
+          actions: <Widget>[
+            TextButton(
+              child: Text("立即前往",style: TextStyle(color: Colors.black),),
+              onPressed: () async {
+                //关闭对话框并返回true
+                Navigator.of(context).pop(true);
+                if (!await launch(url)) throw 'Could not launch $url';
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future _openAlertDialog(

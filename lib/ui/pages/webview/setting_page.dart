@@ -8,6 +8,7 @@ import 'package:library_reservation/core/model/update_back_entity.dart';
 import 'package:sm_crypto/sm_crypto.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import '../../../core/model/update_entity.dart';
 import '../../../core/service/config/api_config.dart';
 import '../../../core/service/network/network.dart';
 import '../../../core/service/utils/manager_utils.dart';
@@ -115,6 +116,13 @@ class _SettingHomePageState extends State<SettingHomePage> {
         },
         onWebViewCreated: (WebViewController controller) {
           _controller = controller;
+        },
+        onPageFinished: (String finish){
+          print("WebView is finish (finish : $finish)");
+        },
+
+        onWebResourceError: (WebResourceError error){
+          print("WebView is finish (finish : $error)");
         },
       ),
     );
@@ -239,6 +247,17 @@ class _SettingHomePageState extends State<SettingHomePage> {
     UpdateBackEntity backEntity = UpdateBackEntity();
     backEntity.success = 'false';
     Response res = await HttpUtil.instance.post(ApiConfig.activate, data: map);
+    if (res.data['code'].toString() == '10016'){
+      Map<String, dynamic> msg = convert.jsonDecode(res.data['msg']);
+      UpdateEntity dataEntity = UpdateEntity().fromJson(msg);
+      showDeleteConfirmDialog1(
+        context,
+        dataEntity.downloadUrl!,
+        dataEntity.version!.desc!,
+        // '立即更新'
+      );
+      return;
+    }
     if (res.data['code'].toString() == '400'){
       backEntity.token = '';
       backEntity.id = '';
@@ -351,5 +370,29 @@ class _SettingHomePageState extends State<SettingHomePage> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+  }
+
+  // 弹出对话框
+  Future<bool?> showDeleteConfirmDialog1(BuildContext context,String url,String desc) {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("提示"),
+          content: Text(desc),
+          actions: <Widget>[
+            TextButton(
+              child: Text("立即前往",style: TextStyle(color: Colors.black),),
+              onPressed: () async {
+                //关闭对话框并返回true
+                Navigator.of(context).pop(true);
+                if (!await launch(url)) throw 'Could not launch $url';
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
