@@ -198,6 +198,13 @@ class _CodeScannerExampleState extends State<CodeScannerExampleBack>
                                     Fluttertoast.showToast(msg: scanResult.userName!);
                                     return;
                                   }
+                                  if (scanResult.phone == '10015') {
+                                    dialogFlag = false;
+                                    Fluttertoast.showToast(msg: scanResult.userName!);
+                                    ManagerUtils.instance.saveSeriesNumber('');
+                                    Navigator.of(context).pop();
+                                    return;
+                                  }
                                   play(remindVoice);
                                   audioFlag = true;
                                   _openAlertDialog(context, value!);
@@ -380,17 +387,24 @@ class _CodeScannerExampleState extends State<CodeScannerExampleBack>
           // '立即更新'
         );
       }
-
-      if (result.data['code'].toString() == '400' ||result.data['code'].toString() == '10001' || result.data['code'].toString() == '10009'){
-
+      if (result.data['code'].toString() == '400' ||
+          result.data['code'].toString() == '10001' ||
+          result.data['code'].toString() == '10015') {
         ScanResultEntity resultEntity = ScanResultEntity();
         resultEntity.userName = result.data['msg'];
         resultEntity.certNo = en;
         resultEntity.resultDicCode = 'other';
         resultEntity.phone = result.data['code'].toString();
-        //print('num======' + result.data['msg']+"------" + SM4Utils.getDecryptData(ebcEncryptData, key));
         resultVoice = Utils.getTotalResultVoice(resultEntity.resultDicCode)!;
-        //Fluttertoast.showToast(msg: resultEntity.userName!);
+        return resultEntity;
+      }
+      if (result.data['code'].toString() == '10009') {
+        ScanResultEntity resultEntity = ScanResultEntity();
+        resultEntity.userName = result.data['msg'];
+        resultEntity.certNo = en;
+        resultEntity.resultDicCode = 'expire';
+        resultEntity.phone = result.data['code'].toString();
+        resultVoice = Utils.getTotalResultVoice(resultEntity.resultDicCode)!;
         return resultEntity;
       }
       if(result.data['data'] == null) {
