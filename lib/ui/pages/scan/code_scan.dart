@@ -427,9 +427,9 @@ class _CodeScannerExampleState extends State<CodeScannerExample>
       }
       if (result.data['code'].toString() == '10009') {
         ScanResultEntity resultEntity = ScanResultEntity();
-        resultEntity.userName = result.data['msg'];
-        resultEntity.certNo = en;
         resultEntity.resultDicCode = 'expire';
+        resultEntity.userName = Utils.getTotalResultText('expire')!;
+        resultEntity.certNo = en;
         resultEntity.phone = result.data['code'].toString();
         resultVoice = Utils.getTotalResultVoice(resultEntity.resultDicCode)!;
         return resultEntity;
